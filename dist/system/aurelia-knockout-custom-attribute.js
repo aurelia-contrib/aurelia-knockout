@@ -1,6 +1,6 @@
 "use strict";
 
-System.register(["aurelia-dependency-injection", "aurelia-framework"], function (_export, _context) {
+System.register(["aurelia-dependency-injection", "aurelia-templating"], function (_export, _context) {
   var inject, customAttribute, _dec, _dec2, _class, KnockoutCustomAttribute;
 
   function _classCallCheck(instance, Constructor) {
@@ -12,8 +12,8 @@ System.register(["aurelia-dependency-injection", "aurelia-framework"], function 
   return {
     setters: [function (_aureliaDependencyInjection) {
       inject = _aureliaDependencyInjection.inject;
-    }, function (_aureliaFramework) {
-      customAttribute = _aureliaFramework.customAttribute;
+    }, function (_aureliaTemplating) {
+      customAttribute = _aureliaTemplating.customAttribute;
     }],
     execute: function () {
       _export("KnockoutCustomAttribute", KnockoutCustomAttribute = (_dec = customAttribute("knockout"), _dec2 = inject(Element), _dec(_class = _dec2(_class = function () {

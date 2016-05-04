@@ -1,4 +1,4 @@
-define(["exports", "aurelia-dependency-injection", "aurelia-framework"], function (exports, _aureliaDependencyInjection, _aureliaFramework) {
+define(["exports", "aurelia-dependency-injection", "aurelia-templating"], function (exports, _aureliaDependencyInjection, _aureliaTemplating) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
@@ -14,7 +14,7 @@ define(["exports", "aurelia-dependency-injection", "aurelia-framework"], functio
 
   var _dec, _dec2, _class;
 
-  var KnockoutCustomAttribute = exports.KnockoutCustomAttribute = (_dec = (0, _aureliaFramework.customAttribute)("knockout"), _dec2 = (0, _aureliaDependencyInjection.inject)(Element), _dec(_class = _dec2(_class = function () {
+  var KnockoutCustomAttribute = exports.KnockoutCustomAttribute = (_dec = (0, _aureliaTemplating.customAttribute)("knockout"), _dec2 = (0, _aureliaDependencyInjection.inject)(Element), _dec(_class = _dec2(_class = function () {
     function KnockoutCustomAttribute(element) {
       _classCallCheck(this, KnockoutCustomAttribute);
 

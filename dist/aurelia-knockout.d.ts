@@ -4,10 +4,10 @@ declare module 'aurelia-knockout' {
   } from 'aurelia-dependency-injection';
   import {
     customAttribute
-  } from 'aurelia-framework';
+  } from 'aurelia-templating';
   export class KnockoutCustomAttribute {
-    constructor(element: any);
-    bind(executionContext: any): any;
+    constructor(element?: any);
+    bind(executionContext?: any): any;
     unbdind(): any;
   }
 }
