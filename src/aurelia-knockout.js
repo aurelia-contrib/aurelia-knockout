@@ -1,8 +1,8 @@
-import * as ko from "knockout";
-import {Container, inject} from "aurelia-dependency-injection";
-import {Loader} from "aurelia-loader";
-import {ViewSlot, CompositionEngine} from "aurelia-templating";
-import {KnockoutCustomAttribute} from "./aurelia-knockout-custom-attribute";
+import * as ko from 'knockout';
+import {Container, inject} from 'aurelia-dependency-injection';
+import {Loader} from 'aurelia-loader';
+import {ViewSlot, CompositionEngine} from 'aurelia-templating';
+import {KnockoutCustomAttribute} from './aurelia-knockout-custom-attribute';
 
 @inject(CompositionEngine, Container, Loader)
 class KnockoutComposition {
@@ -17,12 +17,12 @@ class KnockoutComposition {
     window.ko = ko;
 
     ko.bindingHandlers.compose = {
-      update: function (element, valueAccessor, allBindings, viewModel) {
-        var value = valueAccessor();
+      update: function(element, valueAccessor, allBindings, viewModel) {
+        let value = valueAccessor();
 
         if (element.childElementCount > 0) {
           // Remove previous composed view
-          this.callEvent(element, "detached", [element, element.parentElement]);
+          this.callEvent(element, 'detached', [element, element.parentElement]);
 
           while (element.firstChild) {
             element.removeChild(element.firstChild);
@@ -35,19 +35,19 @@ class KnockoutComposition {
   }
 
   callEvent(element, eventName, args) {
-    var viewModel = ko.dataFor(element.children[0]);
+    let viewModel = ko.dataFor(element.children[0]);
 
-    var func = viewModel[eventName];
+    let func = viewModel[eventName];
 
-    if (func && typeof func === "function") {
+    if (func && typeof func === 'function') {
       func.apply(viewModel, args);
     }
   }
 
   doComposition(element, unwrappedValue, viewModel) {
-    this.buildCompositionSettings(unwrappedValue, viewModel).then(function (settings) {
-      this.composeElementInstruction(element, settings, this).then(function () {
-        this.callEvent(element, "compositionComplete", [element, element.parentElement]);
+    this.buildCompositionSettings(unwrappedValue, viewModel).then(function(settings) {
+      this.composeElementInstruction(element, settings, this).then(function() {
+        this.callEvent(element, 'compositionComplete', [element, element.parentElement]);
       }.bind(this));
     }.bind(this));
   }
@@ -64,22 +64,22 @@ class KnockoutComposition {
     instruction.viewResources = instruction.viewResources || ctx.viewResources;
     instruction.currentBehavior = instruction.currentBehavior || ctx.currentBehavior;
 
-    return this.compositionEngine.compose(instruction).then(function (next) {
+    return this.compositionEngine.compose(instruction).then(function(next) {
       ctx.currentBehavior = next;
       ctx.currentViewModel = next ? next.executionContext : null;
     });
   }
 
   buildCompositionSettings(value, bindingContext) {
-    var view;
-    var moduleId;
-    var viewModel;
-    var activationData;
+    let view;
+    let moduleId;
+    let viewModel;
+    let activationData;
 
     // See http://durandaljs.com/documentation/Using-Composition.html
 
-    if (typeof value === "string") {
-      if (this.endsWith(value, ".html")) {
+    if (typeof value === 'string') {
+      if (this.endsWith(value, '.html')) {
         // The name of the html view (assuming that the model name is equivalent to the view)
         view = value;
         moduleId = value.substr(0, value.length - 5);
@@ -87,7 +87,7 @@ class KnockoutComposition {
         // The name of the module (moduleId)
         moduleId = value;
       }
-    } else if (typeof value === "object") {
+    } else if (typeof value === 'object') {
       if (value.view && !value.model) {
         // Only view is set. Bind it to the current viewModel
         view = value.view;
@@ -108,20 +108,20 @@ class KnockoutComposition {
         activationData = value.activationData;
       }
 
-      if (typeof viewModel === "string") {
+      if (typeof viewModel === 'string') {
         // The model is a moduleId
         moduleId = viewModel;
         viewModel = null;
       }
-    } else if (typeof value === "function") {
+    } else if (typeof value === 'function') {
       // Call the constructor
       viewModel = value();
     }
 
-    var settings = { view: view, viewModel: viewModel, model: activationData };
+    let settings = { view: view, viewModel: viewModel, model: activationData };
 
     if (!viewModel) {
-      return this.loadModule(moduleId).then(function (modelInstance) {
+      return this.loadModule(moduleId).then(function(modelInstance) {
         settings.viewModel = modelInstance;
         return Promise.resolve(settings);
       });
@@ -131,8 +131,8 @@ class KnockoutComposition {
   }
 
   loadModule(moduleId) {
-    return this.loader.loadModule(moduleId).then(function (result) {
-      if (typeof result !== "function") {
+    return this.loader.loadModule(moduleId).then(function(result) {
+      if (typeof result !== 'function') {
         result = result[Object.keys(result)[0]];
       }
 
@@ -157,4 +157,4 @@ function configure(frameworkConfig) {
 export {
   KnockoutCustomAttribute,
   configure
-}
+};

@@ -1,10 +1,10 @@
 var _dec, _class;
 
-import * as ko from "knockout";
-import { Container, inject } from "aurelia-dependency-injection";
-import { Loader } from "aurelia-loader";
-import { ViewSlot, CompositionEngine } from "aurelia-templating";
-import { KnockoutCustomAttribute } from "./aurelia-knockout-custom-attribute";
+import * as ko from 'knockout';
+import { Container, inject } from 'aurelia-dependency-injection';
+import { Loader } from 'aurelia-loader';
+import { ViewSlot, CompositionEngine } from 'aurelia-templating';
+import { KnockoutCustomAttribute } from './aurelia-knockout-custom-attribute';
 
 let KnockoutComposition = (_dec = inject(CompositionEngine, Container, Loader), _dec(_class = class KnockoutComposition {
 
@@ -19,10 +19,10 @@ let KnockoutComposition = (_dec = inject(CompositionEngine, Container, Loader), 
 
     ko.bindingHandlers.compose = {
       update: function (element, valueAccessor, allBindings, viewModel) {
-        var value = valueAccessor();
+        let value = valueAccessor();
 
         if (element.childElementCount > 0) {
-          this.callEvent(element, "detached", [element, element.parentElement]);
+          this.callEvent(element, 'detached', [element, element.parentElement]);
 
           while (element.firstChild) {
             element.removeChild(element.firstChild);
@@ -35,11 +35,11 @@ let KnockoutComposition = (_dec = inject(CompositionEngine, Container, Loader), 
   }
 
   callEvent(element, eventName, args) {
-    var viewModel = ko.dataFor(element.children[0]);
+    let viewModel = ko.dataFor(element.children[0]);
 
-    var func = viewModel[eventName];
+    let func = viewModel[eventName];
 
-    if (func && typeof func === "function") {
+    if (func && typeof func === 'function') {
       func.apply(viewModel, args);
     }
   }
@@ -47,7 +47,7 @@ let KnockoutComposition = (_dec = inject(CompositionEngine, Container, Loader), 
   doComposition(element, unwrappedValue, viewModel) {
     this.buildCompositionSettings(unwrappedValue, viewModel).then(function (settings) {
       this.composeElementInstruction(element, settings, this).then(function () {
-        this.callEvent(element, "compositionComplete", [element, element.parentElement]);
+        this.callEvent(element, 'compositionComplete', [element, element.parentElement]);
       }.bind(this));
     }.bind(this));
   }
@@ -71,19 +71,19 @@ let KnockoutComposition = (_dec = inject(CompositionEngine, Container, Loader), 
   }
 
   buildCompositionSettings(value, bindingContext) {
-    var view;
-    var moduleId;
-    var viewModel;
-    var activationData;
+    let view;
+    let moduleId;
+    let viewModel;
+    let activationData;
 
-    if (typeof value === "string") {
-      if (this.endsWith(value, ".html")) {
+    if (typeof value === 'string') {
+      if (this.endsWith(value, '.html')) {
         view = value;
         moduleId = value.substr(0, value.length - 5);
       } else {
         moduleId = value;
       }
-    } else if (typeof value === "object") {
+    } else if (typeof value === 'object') {
       if (value.view && !value.model) {
         view = value.view;
         viewModel = bindingContext;
@@ -100,15 +100,15 @@ let KnockoutComposition = (_dec = inject(CompositionEngine, Container, Loader), 
         activationData = value.activationData;
       }
 
-      if (typeof viewModel === "string") {
+      if (typeof viewModel === 'string') {
         moduleId = viewModel;
         viewModel = null;
       }
-    } else if (typeof value === "function") {
+    } else if (typeof value === 'function') {
       viewModel = value();
     }
 
-    var settings = { view: view, viewModel: viewModel, model: activationData };
+    let settings = { view: view, viewModel: viewModel, model: activationData };
 
     if (!viewModel) {
       return this.loadModule(moduleId).then(function (modelInstance) {
@@ -122,7 +122,7 @@ let KnockoutComposition = (_dec = inject(CompositionEngine, Container, Loader), 
 
   loadModule(moduleId) {
     return this.loader.loadModule(moduleId).then(function (result) {
-      if (typeof result !== "function") {
+      if (typeof result !== 'function') {
         result = result[Object.keys(result)[0]];
       }
 

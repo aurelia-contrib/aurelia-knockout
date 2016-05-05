@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -9,17 +9,17 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _dec, _class;
 
-var _knockout = require("knockout");
+var _knockout = require('knockout');
 
 var ko = _interopRequireWildcard(_knockout);
 
-var _aureliaDependencyInjection = require("aurelia-dependency-injection");
+var _aureliaDependencyInjection = require('aurelia-dependency-injection');
 
-var _aureliaLoader = require("aurelia-loader");
+var _aureliaLoader = require('aurelia-loader');
 
-var _aureliaTemplating = require("aurelia-templating");
+var _aureliaTemplating = require('aurelia-templating');
 
-var _aureliaKnockoutCustomAttribute = require("./aurelia-knockout-custom-attribute");
+var _aureliaKnockoutCustomAttribute = require('./aurelia-knockout-custom-attribute');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -42,7 +42,7 @@ var KnockoutComposition = (_dec = (0, _aureliaDependencyInjection.inject)(_aurel
         var value = valueAccessor();
 
         if (element.childElementCount > 0) {
-          this.callEvent(element, "detached", [element, element.parentElement]);
+          this.callEvent(element, 'detached', [element, element.parentElement]);
 
           while (element.firstChild) {
             element.removeChild(element.firstChild);
@@ -59,7 +59,7 @@ var KnockoutComposition = (_dec = (0, _aureliaDependencyInjection.inject)(_aurel
 
     var func = viewModel[eventName];
 
-    if (func && typeof func === "function") {
+    if (func && typeof func === 'function') {
       func.apply(viewModel, args);
     }
   };
@@ -67,7 +67,7 @@ var KnockoutComposition = (_dec = (0, _aureliaDependencyInjection.inject)(_aurel
   KnockoutComposition.prototype.doComposition = function doComposition(element, unwrappedValue, viewModel) {
     this.buildCompositionSettings(unwrappedValue, viewModel).then(function (settings) {
       this.composeElementInstruction(element, settings, this).then(function () {
-        this.callEvent(element, "compositionComplete", [element, element.parentElement]);
+        this.callEvent(element, 'compositionComplete', [element, element.parentElement]);
       }.bind(this));
     }.bind(this));
   };
@@ -91,19 +91,19 @@ var KnockoutComposition = (_dec = (0, _aureliaDependencyInjection.inject)(_aurel
   };
 
   KnockoutComposition.prototype.buildCompositionSettings = function buildCompositionSettings(value, bindingContext) {
-    var view;
-    var moduleId;
-    var viewModel;
-    var activationData;
+    var view = void 0;
+    var moduleId = void 0;
+    var viewModel = void 0;
+    var activationData = void 0;
 
-    if (typeof value === "string") {
-      if (this.endsWith(value, ".html")) {
+    if (typeof value === 'string') {
+      if (this.endsWith(value, '.html')) {
         view = value;
         moduleId = value.substr(0, value.length - 5);
       } else {
         moduleId = value;
       }
-    } else if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === "object") {
+    } else if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object') {
       if (value.view && !value.model) {
         view = value.view;
         viewModel = bindingContext;
@@ -120,11 +120,11 @@ var KnockoutComposition = (_dec = (0, _aureliaDependencyInjection.inject)(_aurel
         activationData = value.activationData;
       }
 
-      if (typeof viewModel === "string") {
+      if (typeof viewModel === 'string') {
         moduleId = viewModel;
         viewModel = null;
       }
-    } else if (typeof value === "function") {
+    } else if (typeof value === 'function') {
       viewModel = value();
     }
 
@@ -142,7 +142,7 @@ var KnockoutComposition = (_dec = (0, _aureliaDependencyInjection.inject)(_aurel
 
   KnockoutComposition.prototype.loadModule = function loadModule(moduleId) {
     return this.loader.loadModule(moduleId).then(function (result) {
-      if (typeof result !== "function") {
+      if (typeof result !== 'function') {
         result = result[Object.keys(result)[0]];
       }
 

@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-System.register(["aurelia-dependency-injection", "aurelia-templating"], function (_export, _context) {
+System.register(['aurelia-dependency-injection', 'aurelia-templating'], function (_export, _context) {
   var inject, customAttribute, _dec, _dec2, _class, KnockoutCustomAttribute;
 
   function _classCallCheck(instance, Constructor) {
@@ -16,7 +16,7 @@ System.register(["aurelia-dependency-injection", "aurelia-templating"], function
       customAttribute = _aureliaTemplating.customAttribute;
     }],
     execute: function () {
-      _export("KnockoutCustomAttribute", KnockoutCustomAttribute = (_dec = customAttribute("knockout"), _dec2 = inject(Element), _dec(_class = _dec2(_class = function () {
+      _export('KnockoutCustomAttribute', KnockoutCustomAttribute = (_dec = customAttribute('knockout'), _dec2 = inject(Element), _dec(_class = _dec2(_class = function () {
         function KnockoutCustomAttribute(element) {
           _classCallCheck(this, KnockoutCustomAttribute);
 
@@ -34,7 +34,7 @@ System.register(["aurelia-dependency-injection", "aurelia-templating"], function
         return KnockoutCustomAttribute;
       }()) || _class) || _class));
 
-      _export("KnockoutCustomAttribute", KnockoutCustomAttribute);
+      _export('KnockoutCustomAttribute', KnockoutCustomAttribute);
     }
   };
 });

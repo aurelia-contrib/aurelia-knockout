@@ -1,8 +1,7 @@
+import {inject} from 'aurelia-dependency-injection';
+import {customAttribute} from 'aurelia-templating';
 
-import {inject} from "aurelia-dependency-injection";
-import {customAttribute} from "aurelia-templating";
-
-@customAttribute("knockout")
+@customAttribute('knockout')
 @inject(Element)
 export class KnockoutCustomAttribute {
 
