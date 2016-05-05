@@ -22,7 +22,6 @@
   "jspm": {
     "dependencies": {
       "aurelia-templating": "npm:aurelia-templating@^1.0.0-beta.1.2.4",
-      "gooy/aurelia-compiler": "github:gooy/aurelia-compiler@^0.0.5",
       "knockout": "npm:knockout@^3.4.0"
     },
     "devDependencies": {

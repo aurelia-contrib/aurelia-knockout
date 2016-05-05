@@ -1,13 +1,13 @@
 import * as ko from "knockout";
-import {Compiler} from "gooy/aurelia-compiler";
 import {Container, inject} from "aurelia-dependency-injection";
 import {Loader} from "aurelia-loader";
+import {ViewSlot, CompositionEngine} from "aurelia-templating";
 
-@inject(Compiler, Container, Loader)
+@inject(CompositionEngine, Container, Loader)
 class KnockoutComposition {
 
-  constructor(compiler, container, loader) {
-    this.compiler = compiler;
+  constructor(compositionEngine, container, loader) {
+    this.compositionEngine = compositionEngine;
     this.container = container;
     this.loader = loader;
   }
@@ -45,10 +45,28 @@ class KnockoutComposition {
 
   doComposition(element, unwrappedValue, viewModel) {
     this.buildCompositionSettings(unwrappedValue, viewModel).then(function (settings) {
-      this.compiler.composeElementInstruction(element, settings, this).then(function () {
+      this.composeElementInstruction(element, settings, this).then(function () {
         this.callEvent(element, "compositionComplete", [element, element.parentElement]);
       }.bind(this));
     }.bind(this));
+  }
+
+  composeElementInstruction(element, instruction, ctx) {
+    instruction.viewSlot = instruction.viewSlot || new ViewSlot(element, true, ctx);
+    return this.processInstruction(ctx, instruction);
+  }
+
+  processInstruction(ctx, instruction) {
+    instruction.container = instruction.container || ctx.container;
+    instruction.executionContext = instruction.executionContext || ctx;
+    instruction.viewSlot = instruction.viewSlot || ctx.viewSlot;
+    instruction.viewResources = instruction.viewResources || ctx.viewResources;
+    instruction.currentBehavior = instruction.currentBehavior || ctx.currentBehavior;
+
+    return this.compositionEngine.compose(instruction).then(function (next) {
+      ctx.currentBehavior = next;
+      ctx.currentViewModel = next ? next.executionContext : null;
+    });
   }
 
   buildCompositionSettings(value, bindingContext) {

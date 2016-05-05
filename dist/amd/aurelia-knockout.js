@@ -1,4 +1,4 @@
-define(["exports", "knockout", "gooy/aurelia-compiler", "aurelia-dependency-injection", "aurelia-loader"], function (exports, _knockout, _aureliaCompiler, _aureliaDependencyInjection, _aureliaLoader) {
+define(["exports", "knockout", "aurelia-dependency-injection", "aurelia-loader", "aurelia-templating"], function (exports, _knockout, _aureliaDependencyInjection, _aureliaLoader, _aureliaTemplating) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
@@ -39,11 +39,11 @@ define(["exports", "knockout", "gooy/aurelia-compiler", "aurelia-dependency-inje
 
   var _dec, _class;
 
-  var KnockoutComposition = (_dec = (0, _aureliaDependencyInjection.inject)(_aureliaCompiler.Compiler, _aureliaDependencyInjection.Container, _aureliaLoader.Loader), _dec(_class = function () {
-    function KnockoutComposition(compiler, container, loader) {
+  var KnockoutComposition = (_dec = (0, _aureliaDependencyInjection.inject)(_aureliaTemplating.CompositionEngine, _aureliaDependencyInjection.Container, _aureliaLoader.Loader), _dec(_class = function () {
+    function KnockoutComposition(compositionEngine, container, loader) {
       _classCallCheck(this, KnockoutComposition);
 
-      this.compiler = compiler;
+      this.compositionEngine = compositionEngine;
       this.container = container;
       this.loader = loader;
     }
@@ -80,10 +80,28 @@ define(["exports", "knockout", "gooy/aurelia-compiler", "aurelia-dependency-inje
 
     KnockoutComposition.prototype.doComposition = function doComposition(element, unwrappedValue, viewModel) {
       this.buildCompositionSettings(unwrappedValue, viewModel).then(function (settings) {
-        this.compiler.composeElementInstruction(element, settings, this).then(function () {
+        this.composeElementInstruction(element, settings, this).then(function () {
           this.callEvent(element, "compositionComplete", [element, element.parentElement]);
         }.bind(this));
       }.bind(this));
+    };
+
+    KnockoutComposition.prototype.composeElementInstruction = function composeElementInstruction(element, instruction, ctx) {
+      instruction.viewSlot = instruction.viewSlot || new _aureliaTemplating.ViewSlot(element, true, ctx);
+      return this.processInstruction(ctx, instruction);
+    };
+
+    KnockoutComposition.prototype.processInstruction = function processInstruction(ctx, instruction) {
+      instruction.container = instruction.container || ctx.container;
+      instruction.executionContext = instruction.executionContext || ctx;
+      instruction.viewSlot = instruction.viewSlot || ctx.viewSlot;
+      instruction.viewResources = instruction.viewResources || ctx.viewResources;
+      instruction.currentBehavior = instruction.currentBehavior || ctx.currentBehavior;
+
+      return this.compositionEngine.compose(instruction).then(function (next) {
+        ctx.currentBehavior = next;
+        ctx.currentViewModel = next ? next.executionContext : null;
+      });
     };
 
     KnockoutComposition.prototype.buildCompositionSettings = function buildCompositionSettings(value, bindingContext) {
