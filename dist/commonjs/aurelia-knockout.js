@@ -3,12 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.configure = exports.KnockoutCustomAttribute = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 var _dec, _class;
-
-exports.configure = configure;
 
 var _knockout = require("knockout");
 
@@ -19,6 +18,8 @@ var _aureliaDependencyInjection = require("aurelia-dependency-injection");
 var _aureliaLoader = require("aurelia-loader");
 
 var _aureliaTemplating = require("aurelia-templating");
+
+var _aureliaKnockoutCustomAttribute = require("./aurelia-knockout-custom-attribute");
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -155,8 +156,13 @@ var KnockoutComposition = (_dec = (0, _aureliaDependencyInjection.inject)(_aurel
 
   return KnockoutComposition;
 }()) || _class);
+
+
 function configure(frameworkConfig) {
   frameworkConfig.globalResources('./aurelia-knockout-custom-attribute');
 
   frameworkConfig.container.get(KnockoutComposition).register();
 }
+
+exports.KnockoutCustomAttribute = _aureliaKnockoutCustomAttribute.KnockoutCustomAttribute;
+exports.configure = configure;

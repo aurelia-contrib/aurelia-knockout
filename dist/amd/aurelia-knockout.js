@@ -1,10 +1,10 @@
-define(["exports", "knockout", "aurelia-dependency-injection", "aurelia-loader", "aurelia-templating"], function (exports, _knockout, _aureliaDependencyInjection, _aureliaLoader, _aureliaTemplating) {
+define(["exports", "knockout", "aurelia-dependency-injection", "aurelia-loader", "aurelia-templating", "./aurelia-knockout-custom-attribute"], function (exports, _knockout, _aureliaDependencyInjection, _aureliaLoader, _aureliaTemplating, _aureliaKnockoutCustomAttribute) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.configure = configure;
+  exports.configure = exports.KnockoutCustomAttribute = undefined;
 
   var ko = _interopRequireWildcard(_knockout);
 
@@ -170,9 +170,14 @@ define(["exports", "knockout", "aurelia-dependency-injection", "aurelia-loader",
 
     return KnockoutComposition;
   }()) || _class);
+
+
   function configure(frameworkConfig) {
     frameworkConfig.globalResources('./aurelia-knockout-custom-attribute');
 
     frameworkConfig.container.get(KnockoutComposition).register();
   }
+
+  exports.KnockoutCustomAttribute = _aureliaKnockoutCustomAttribute.KnockoutCustomAttribute;
+  exports.configure = configure;
 });

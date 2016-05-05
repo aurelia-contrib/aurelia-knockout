@@ -1,12 +1,18 @@
 "use strict";
 
-System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "aurelia-templating"], function (_export, _context) {
-  var ko, Container, inject, Loader, ViewSlot, CompositionEngine, _typeof, _dec, _class, KnockoutComposition;
+System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "aurelia-templating", "./aurelia-knockout-custom-attribute"], function (_export, _context) {
+  var ko, Container, inject, Loader, ViewSlot, CompositionEngine, KnockoutCustomAttribute, _typeof, _dec, _class, KnockoutComposition;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
     }
+  }
+
+  function configure(frameworkConfig) {
+    frameworkConfig.globalResources('./aurelia-knockout-custom-attribute');
+
+    frameworkConfig.container.get(KnockoutComposition).register();
   }
 
   return {
@@ -20,6 +26,8 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
     }, function (_aureliaTemplating) {
       ViewSlot = _aureliaTemplating.ViewSlot;
       CompositionEngine = _aureliaTemplating.CompositionEngine;
+    }, function (_aureliaKnockoutCustomAttribute) {
+      KnockoutCustomAttribute = _aureliaKnockoutCustomAttribute.KnockoutCustomAttribute;
     }],
     execute: function () {
       _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
@@ -158,11 +166,8 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
 
         return KnockoutComposition;
       }()) || _class);
-      function configure(frameworkConfig) {
-        frameworkConfig.globalResources('./aurelia-knockout-custom-attribute');
 
-        frameworkConfig.container.get(KnockoutComposition).register();
-      }
+      _export("KnockoutCustomAttribute", KnockoutCustomAttribute);
 
       _export("configure", configure);
     }

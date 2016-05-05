@@ -2,6 +2,7 @@ import * as ko from "knockout";
 import {Container, inject} from "aurelia-dependency-injection";
 import {Loader} from "aurelia-loader";
 import {ViewSlot, CompositionEngine} from "aurelia-templating";
+import {KnockoutCustomAttribute} from "./aurelia-knockout-custom-attribute";
 
 @inject(CompositionEngine, Container, Loader)
 class KnockoutComposition {
@@ -145,10 +146,15 @@ class KnockoutComposition {
 }
 
 
-export function configure(frameworkConfig) {
+function configure(frameworkConfig) {
   // register custom attribute
   frameworkConfig.globalResources('./aurelia-knockout-custom-attribute');
 
   // register knockout custom binding for composition logic
   frameworkConfig.container.get(KnockoutComposition).register();
+}
+
+export {
+  KnockoutCustomAttribute,
+  configure
 }

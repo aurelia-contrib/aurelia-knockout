@@ -1,10 +1,10 @@
 var _dec, _class;
 
 import * as ko from "knockout";
-
 import { Container, inject } from "aurelia-dependency-injection";
 import { Loader } from "aurelia-loader";
 import { ViewSlot, CompositionEngine } from "aurelia-templating";
+import { KnockoutCustomAttribute } from "./aurelia-knockout-custom-attribute";
 
 let KnockoutComposition = (_dec = inject(CompositionEngine, Container, Loader), _dec(_class = class KnockoutComposition {
 
@@ -136,8 +136,10 @@ let KnockoutComposition = (_dec = inject(CompositionEngine, Container, Loader), 
 }) || _class);
 
 
-export function configure(frameworkConfig) {
+function configure(frameworkConfig) {
   frameworkConfig.globalResources('./aurelia-knockout-custom-attribute');
 
   frameworkConfig.container.get(KnockoutComposition).register();
 }
+
+export { KnockoutCustomAttribute, configure };
