@@ -110,7 +110,7 @@ System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', '
             } else {
               moduleId = value;
             }
-          } else if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object') {
+          } else if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && value) {
             if (value.view && !value.model) {
               view = value.view;
               viewModel = bindingContext;
@@ -137,7 +137,7 @@ System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', '
 
           var settings = { view: view, viewModel: viewModel, model: activationData };
 
-          if (!viewModel) {
+          if (!viewModel && moduleId) {
             return this.loadModule(moduleId).then(function (modelInstance) {
               settings.viewModel = modelInstance;
               return Promise.resolve(settings);

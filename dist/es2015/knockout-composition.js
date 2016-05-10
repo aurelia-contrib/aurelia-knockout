@@ -82,7 +82,7 @@ export let KnockoutComposition = (_dec = inject(CompositionEngine, Container, Lo
       } else {
         moduleId = value;
       }
-    } else if (typeof value === 'object') {
+    } else if (typeof value === 'object' && value) {
       if (value.view && !value.model) {
         view = value.view;
         viewModel = bindingContext;
@@ -109,7 +109,7 @@ export let KnockoutComposition = (_dec = inject(CompositionEngine, Container, Lo
 
     let settings = { view: view, viewModel: viewModel, model: activationData };
 
-    if (!viewModel) {
+    if (!viewModel && moduleId) {
       return this.loadModule(moduleId).then(modelInstance => {
         settings.viewModel = modelInstance;
         return Promise.resolve(settings);

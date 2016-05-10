@@ -86,7 +86,7 @@ export class KnockoutComposition {
         // The name of the module (moduleId)
         moduleId = value;
       }
-    } else if (typeof value === 'object') {
+    } else if (typeof value === 'object' && value) {
       if (value.view && !value.model) {
         // Only view is set. Bind it to the current viewModel
         view = value.view;
@@ -119,7 +119,7 @@ export class KnockoutComposition {
 
     let settings = { view: view, viewModel: viewModel, model: activationData };
 
-    if (!viewModel) {
+    if (!viewModel && moduleId) {
       return this.loadModule(moduleId).then((modelInstance) => {
         settings.viewModel = modelInstance;
         return Promise.resolve(settings);
