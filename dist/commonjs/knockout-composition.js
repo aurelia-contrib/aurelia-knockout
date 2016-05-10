@@ -3,11 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.KnockoutCustomAttribute = exports.KnockoutComposition = undefined;
+exports.KnockoutComposition = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var _dec, _class, _dec2, _dec3, _class2;
+var _dec, _class;
 
 var _knockout = require('knockout');
 
@@ -160,20 +160,3 @@ var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDepe
 
   return KnockoutComposition;
 }()) || _class);
-var KnockoutCustomAttribute = exports.KnockoutCustomAttribute = (_dec2 = (0, _aureliaTemplating.customAttribute)('knockout'), _dec3 = (0, _aureliaDependencyInjection.inject)(Element), _dec2(_class2 = _dec3(_class2 = function () {
-  function KnockoutCustomAttribute(element) {
-    _classCallCheck(this, KnockoutCustomAttribute);
-
-    this.element = element;
-  }
-
-  KnockoutCustomAttribute.prototype.bind = function bind(executionContext) {
-    ko.applyBindings(executionContext, this.element);
-  };
-
-  KnockoutCustomAttribute.prototype.unbdind = function unbdind() {
-    ko.cleanNode(this.element);
-  };
-
-  return KnockoutCustomAttribute;
-}()) || _class2) || _class2);
