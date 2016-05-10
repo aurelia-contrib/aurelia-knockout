@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var Karma = require('karma').Server;
+var coveralls = require('gulp-coveralls');
 
 /**
  * Run test once and exit
@@ -37,4 +38,12 @@ gulp.task('cover', function (done) {
       dir: 'build/reports/coverage'
     }
   }, done).start();
+});
+
+/**
+ * Report coverage to coveralls
+ */
+gulp.task('coveralls', ['test'], function () {
+  gulp.src('build/reports/coverage/lcov/report-lcovonly.txt')
+    .pipe(coveralls());
 });

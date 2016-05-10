@@ -11,6 +11,10 @@
     "databinding",
     "knockout"
   ],
+  "scripts": {
+    "test": "gulp test",
+    "ci": "gulp ci"
+  },
   "homepage": "https://github.com/code-chris/aurelia-knockout",
   "bugs": {
     "url": "https://github.com/code-chris/aurelia-knockout/issues"
@@ -56,6 +60,7 @@
     "gulp-babel": "^6.1.2",
     "gulp-bump": "^2.1.0",
     "gulp-concat": "^2.6.0",
+    "gulp-coveralls": "^0.1.4",
     "gulp-eslint": "^2.0.0",
     "gulp-ignore": "^2.0.1",
     "gulp-insert": "^0.5.0",
