@@ -20,6 +20,11 @@
     "url": "http://github.com/code-chris/aurelia-knockout"
   },
   "jspm": {
+    "main": "aurelia-knockout",
+    "format": "amd",
+    "directories": {
+      "lib": "dist/amd"
+    },
     "dependencies": {
       "aurelia-templating": "npm:aurelia-templating@^1.0.0-beta.1.2.4",
       "knockout": "npm:knockout@^3.4.0"
