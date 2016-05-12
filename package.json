@@ -24,21 +24,22 @@
     "url": "http://github.com/code-chris/aurelia-knockout"
   },
   "jspm": {
+    "registry": "npm",
     "main": "aurelia-knockout",
     "format": "amd",
     "directories": {
       "lib": "dist/amd"
     },
     "dependencies": {
-      "aurelia-templating": "npm:aurelia-templating@^1.0.0-beta.1.2.4",
-      "knockout": "npm:knockout@^3.4.0"
+      "aurelia-templating": "^1.0.0-beta.1.2.4",
+      "knockout": "^3.4.0"
     },
     "devDependencies": {
-      "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.0.0-beta.1.2.2",
-      "aurelia-loader": "npm:aurelia-loader@1.0.0-beta.1.2.0",
-      "babel": "npm:babel-core@^5.8.38",
-      "babel-runtime": "npm:babel-runtime@^5.8.38",
-      "core-js": "npm:core-js@^2.0.3"
+      "aurelia-dependency-injection": "1.0.0-beta.1.2.2",
+      "aurelia-loader": "1.0.0-beta.1.2.0",
+      "babel": "babel-core@^5.8.38",
+      "babel-runtime": "^5.8.38",
+      "core-js": "^2.0.3"
     }
   },
   "devDependencies": {
