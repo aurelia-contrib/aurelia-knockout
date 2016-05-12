@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.1.2
+
+Released on May 12, 2016.
+
+-   Added Usage documentation. Issue [#1](https://github.com/code-chris/aurelia-knockout/issues/1)
+
 
 ## Version 0.1.1
 
