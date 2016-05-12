@@ -18,7 +18,7 @@ This library can be used in the **browser** only.
 
 Register the plugin at the startup of Aurelia:
 
-```
+```es6
 export function configure(aurelia) => {
     aurelia.use
         .standardConfiguration()
@@ -36,7 +36,7 @@ export function configure(aurelia) => {
 To use the knockout binding syntax in your HTML view you have to add the "knockout" custom attribute to a
 html element which surrounds all elements which are using knockout syntax:
 
-```
+```html
 <template>
     <div knockout>
         <button data-bind="click: changeVisibility">Change Visibility</button>
@@ -58,7 +58,7 @@ If you used Durandal as your previous SPA-Framework you want to use compositions
 As the syntax looks like knockout, the compose binding was not part of knockout itself. This plugin can handle the
 old Durandal composition syntax.
 
-```
+```html
 <template>
     <div knockout>
         <button data-bind="click: switchView">Switch SubView</button>
@@ -72,7 +72,7 @@ old Durandal composition syntax.
 
 All cases from the [offical Durandal](http://durandaljs.com/documentation/Using-Composition.html) documentation should be covered:
 
-```
+```html
 <div data-bind="compose: 'path/to/view.html'"></div>
 <div data-bind="compose: 'path/to/module'"></div>
 <div data-bind="compose: { view: 'path/to/view.html' }"></div>
@@ -85,7 +85,7 @@ All cases from the [offical Durandal](http://durandaljs.com/documentation/Using-
 ```
 
 You can also pass an object as activationData which is passed as argument to the ```activate(activationData)``` function:
-```
+```html
 <div data-bind="compose: { model: 'path/to/module', activationData: data }"></div>
 ```
 
