@@ -26,7 +26,7 @@ before_install:
 
 install:
   - npm install
-  - node_modules/.bin/jspm install
+  - jspm install
 
 before_script:
   - export CHROME_BIN=chromium-browser
