@@ -1,4 +1,5 @@
 import {KnockoutComposition} from '../src/knockout-composition';
+import "core-js";
 
 describe('knockout composition', function() {
   var knockoutComposition;
