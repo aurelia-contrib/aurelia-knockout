@@ -1,11 +1,8 @@
 import {KnockoutComposition} from '../src/knockout-composition';
-import {Map} from "core-js/es6/map";
 
 describe('knockout composition', function() {
   var knockoutComposition;
   var viewModelInstance;
-
-  window.Map = Map;
 
   beforeEach(() => {
     viewModelInstance = Promise.resolve({ prop: "myInstance", test: () => {} });
