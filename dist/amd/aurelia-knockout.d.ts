@@ -26,6 +26,6 @@ declare module 'aurelia-knockout' {
   export class KnockoutCustomAttribute {
     constructor(element?: any);
     bind(executionContext?: any): any;
-    unbdind(): any;
+    unbind(): any;
   }
 }

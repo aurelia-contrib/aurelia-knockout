@@ -13,7 +13,7 @@ export let KnockoutCustomAttribute = (_dec = customAttribute('knockout'), _dec2 
     ko.applyBindings(executionContext, this.element);
   }
 
-  unbdind() {
+  unbind() {
     ko.cleanNode(this.element);
   }
 }) || _class) || _class);

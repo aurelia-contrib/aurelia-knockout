@@ -25,7 +25,7 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-templating'], functi
       ko.applyBindings(executionContext, this.element);
     };
 
-    KnockoutCustomAttribute.prototype.unbdind = function unbdind() {
+    KnockoutCustomAttribute.prototype.unbind = function unbind() {
       ko.cleanNode(this.element);
     };
 

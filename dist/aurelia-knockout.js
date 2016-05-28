@@ -156,7 +156,7 @@ export class KnockoutCustomAttribute {
     ko.applyBindings(executionContext, this.element);
   }
 
-  unbdind() {
+  unbind() {
     ko.cleanNode(this.element);
   }
 }
