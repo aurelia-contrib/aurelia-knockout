@@ -96,6 +96,72 @@ The following callback functions will be called:
 ```detached(element, parentElement)``` before the composed view will be removed from the DOM.
 
 
+### Set values from @bindable properties
+
+To ensure full flexibility for your migration process, this plugin provides also a feature to set ```@bindable```
+properties in rewritten Aurelia sub-views from the activationData which comes from old Knockout based views:
+
+##### Parent Knockout based view
+
+```html
+<template>
+  <div data-bind="compose: { model: 'path/to/submodule', activationData: data }"></div>
+</template>
+```
+
+The data object looks like:
+```es6
+{
+  price: ko.observable(5),
+  productName: "Apples"
+}
+```
+
+##### Child Aurelia based view
+
+```html
+<template>
+  Product: <span>${productName}</span>
+  <br/>
+  Price: <span>${price}</span>
+</template>
+```
+
+The backing JavaScript code:
+```
+import {bindable} from "aurelia-framework";
+import {KnockoutBindable} from "aurelia-knockout";
+import {inject} from 'aurelia-dependency-injection';
+
+@inject(KnockoutBindable)
+export class ProductView {
+
+    @bindable
+    price;
+    productName;
+
+    knockoutBindable;
+
+    constructor(knockoutBindable) {
+        this.knockoutBindable = knockoutBindable;
+    }
+
+    activate(activationData) {
+        this.knockoutBindable.applyBindableValues(activationData, this);
+    }
+}
+```
+
+This will set the value from ```activationData.price``` to ```this.price```. ```this.productName``` however, is not
+updated because it has no ```@bindable``` decorator and the variable from ```activationData``` is no Knockout
+Observable. To process non Knockout Observables anyway you have to pass ```false``` as third parameter to the
+```applyBindableValues``` function. If the outer value changed (and is an Observable) the corresponding inner
+variable is updated too.
+
+Subscriptions for Knockout Observables which are created from this plugin internally will be disposed automatically
+if the child view is unbound.
+
+
 ## Building The Code
 
 To build the code, follow these steps.
