@@ -128,7 +128,7 @@ The data object looks like:
 ```
 
 The backing JavaScript code:
-```
+```es6
 import {bindable} from "aurelia-framework";
 import {KnockoutBindable} from "aurelia-knockout";
 import {inject} from 'aurelia-dependency-injection';
