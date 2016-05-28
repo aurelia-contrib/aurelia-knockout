@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.2.0
+
+Released on May 28, 2016.
+
+-   Fixed typo in knockout-custom-attribute module
+-   Added ability to set and update bindable variables in subsequent Aurelia views from parent knockout views
+
+
 ## Version 0.1.2
 
 Released on May 12, 2016.
