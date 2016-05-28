@@ -1,10 +1,10 @@
-define(['exports', './aurelia-knockout-custom-attribute', './knockout-composition'], function (exports, _aureliaKnockoutCustomAttribute, _knockoutComposition) {
+define(['exports', './aurelia-knockout-custom-attribute', './knockout-composition', './knockout-bindable'], function (exports, _aureliaKnockoutCustomAttribute, _knockoutComposition, _knockoutBindable) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.configure = exports.KnockoutCustomAttribute = undefined;
+  exports.configure = exports.KnockoutBindable = exports.KnockoutCustomAttribute = undefined;
 
 
   function configure(frameworkConfig) {
@@ -14,5 +14,6 @@ define(['exports', './aurelia-knockout-custom-attribute', './knockout-compositio
   }
 
   exports.KnockoutCustomAttribute = _aureliaKnockoutCustomAttribute.KnockoutCustomAttribute;
+  exports.KnockoutBindable = _knockoutBindable.KnockoutBindable;
   exports.configure = configure;
 });

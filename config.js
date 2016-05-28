@@ -14,6 +14,7 @@ System.config({
   },
 
   map: {
+    "aurelia-binding": "npm:aurelia-binding@1.0.0-beta.1.3.6",
     "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.0.0-beta.1.2.2",
     "aurelia-loader": "npm:aurelia-loader@1.0.0-beta.1.2.0",
     "aurelia-templating": "npm:aurelia-templating@1.0.0-beta.1.2.7",
@@ -37,6 +38,12 @@ System.config({
       "util": "npm:util@0.10.3"
     },
     "npm:aurelia-binding@1.0.0-beta.1.3.5": {
+      "aurelia-logging": "npm:aurelia-logging@1.0.0-beta.1.2.1",
+      "aurelia-metadata": "npm:aurelia-metadata@1.0.0-beta.1.2.1",
+      "aurelia-pal": "npm:aurelia-pal@1.0.0-beta.1.2.2",
+      "aurelia-task-queue": "npm:aurelia-task-queue@1.0.0-beta.1.2.1"
+    },
+    "npm:aurelia-binding@1.0.0-beta.1.3.6": {
       "aurelia-logging": "npm:aurelia-logging@1.0.0-beta.1.2.1",
       "aurelia-metadata": "npm:aurelia-metadata@1.0.0-beta.1.2.1",
       "aurelia-pal": "npm:aurelia-pal@1.0.0-beta.1.2.2",

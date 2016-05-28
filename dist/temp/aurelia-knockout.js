@@ -3,11 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.KnockoutCustomAttribute = exports.KnockoutComposition = undefined;
+exports.KnockoutCustomAttribute = exports.KnockoutBindable = exports.KnockoutComposition = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var _dec, _class, _dec2, _dec3, _class2;
+var _dec, _class, _dec2, _class2, _dec3, _dec4, _class4;
 
 var _knockout = require('knockout');
 
@@ -18,6 +18,8 @@ var _aureliaDependencyInjection = require('aurelia-dependency-injection');
 var _aureliaLoader = require('aurelia-loader');
 
 var _aureliaTemplating = require('aurelia-templating');
+
+var _aureliaBinding = require('aurelia-binding');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -160,7 +162,67 @@ var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDepe
 
   return KnockoutComposition;
 }()) || _class);
-var KnockoutCustomAttribute = exports.KnockoutCustomAttribute = (_dec2 = (0, _aureliaTemplating.customAttribute)('knockout'), _dec3 = (0, _aureliaDependencyInjection.inject)(Element), _dec2(_class2 = _dec3(_class2 = function () {
+var KnockoutBindable = exports.KnockoutBindable = (_dec2 = (0, _aureliaDependencyInjection.inject)(_aureliaBinding.ObserverLocator), _dec2(_class2 = function () {
+  function KnockoutBindable(observerLocator) {
+    _classCallCheck(this, KnockoutBindable);
+
+    this.subscriptions = [];
+
+    this.observerLocator = observerLocator;
+  }
+
+  KnockoutBindable.prototype.applyBindableValues = function applyBindableValues(data, target, applyOnlyObservables) {
+    var _this4 = this;
+
+    data = data || {};
+    target = target || {};
+    applyOnlyObservables = applyOnlyObservables === undefined ? true : applyOnlyObservables;
+
+    var keys = Object.keys(data);
+
+    keys.forEach(function (key) {
+      var outerValue = data[key];
+      var isObservable = ko.isObservable(outerValue);
+
+      if (isObservable || !applyOnlyObservables) {
+        (function () {
+          var observer = _this4.getObserver(target, key);
+
+          if (observer && observer instanceof _aureliaTemplating.BehaviorPropertyObserver) {
+            observer.setValue(isObservable ? ko.unwrap(outerValue) : outerValue);
+          }
+
+          if (isObservable) {
+            _this4.subscriptions.push(outerValue.subscribe(function (newValue) {
+              observer.setValue(newValue);
+            }));
+          }
+        })();
+      }
+    });
+
+    var originalUnbind = target.unbind;
+
+    target.unbind = function () {
+      _this4.subscriptions.forEach(function (subscription) {
+        subscription.dispose();
+      });
+
+      _this4.subscriptions = [];
+
+      if (originalUnbind) {
+        originalUnbind.call(target);
+      }
+    };
+  };
+
+  KnockoutBindable.prototype.getObserver = function getObserver(target, key) {
+    return this.observerLocator.getObserver(target, key);
+  };
+
+  return KnockoutBindable;
+}()) || _class2);
+var KnockoutCustomAttribute = exports.KnockoutCustomAttribute = (_dec3 = (0, _aureliaTemplating.customAttribute)('knockout'), _dec4 = (0, _aureliaDependencyInjection.inject)(Element), _dec3(_class4 = _dec4(_class4 = function () {
   function KnockoutCustomAttribute(element) {
     _classCallCheck(this, KnockoutCustomAttribute);
 
@@ -176,4 +238,4 @@ var KnockoutCustomAttribute = exports.KnockoutCustomAttribute = (_dec2 = (0, _au
   };
 
   return KnockoutCustomAttribute;
-}()) || _class2) || _class2);
+}()) || _class4) || _class4);

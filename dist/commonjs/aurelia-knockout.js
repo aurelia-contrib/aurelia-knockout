@@ -3,11 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.configure = exports.KnockoutCustomAttribute = undefined;
+exports.configure = exports.KnockoutBindable = exports.KnockoutCustomAttribute = undefined;
 
 var _aureliaKnockoutCustomAttribute = require('./aurelia-knockout-custom-attribute');
 
 var _knockoutComposition = require('./knockout-composition');
+
+var _knockoutBindable = require('./knockout-bindable');
 
 function configure(frameworkConfig) {
   frameworkConfig.globalResources('./aurelia-knockout-custom-attribute');
@@ -16,4 +18,5 @@ function configure(frameworkConfig) {
 }
 
 exports.KnockoutCustomAttribute = _aureliaKnockoutCustomAttribute.KnockoutCustomAttribute;
+exports.KnockoutBindable = _knockoutBindable.KnockoutBindable;
 exports.configure = configure;

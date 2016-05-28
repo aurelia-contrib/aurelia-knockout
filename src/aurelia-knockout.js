@@ -1,5 +1,6 @@
 import {KnockoutCustomAttribute} from './aurelia-knockout-custom-attribute';
 import {KnockoutComposition} from './knockout-composition';
+import {KnockoutBindable} from './knockout-bindable';
 
 function configure(frameworkConfig) {
   // register custom attribute
@@ -11,5 +12,6 @@ function configure(frameworkConfig) {
 
 export {
   KnockoutCustomAttribute,
+  KnockoutBindable,
   configure
 };

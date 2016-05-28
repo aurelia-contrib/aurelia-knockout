@@ -1,7 +1,8 @@
 import * as ko from 'knockout';
 import {Container,inject} from 'aurelia-dependency-injection';
 import {Loader} from 'aurelia-loader';
-import {ViewSlot,CompositionEngine,customAttribute} from 'aurelia-templating';
+import {ViewSlot,CompositionEngine,BehaviorPropertyObserver,customAttribute} from 'aurelia-templating';
+import {ObserverLocator} from 'aurelia-binding';
 
 @inject(CompositionEngine, Container, Loader)
 export class KnockoutComposition {
@@ -141,6 +142,63 @@ export class KnockoutComposition {
 
   endsWith(s, suffix) {
     return s.indexOf(suffix, s.length - suffix.length) !== -1;
+  }
+}
+
+@inject(ObserverLocator)
+export class KnockoutBindable {
+
+  observerLocator;
+  subscriptions = [];
+
+  constructor(observerLocator) {
+    this.observerLocator = observerLocator;
+  }
+
+  applyBindableValues(data, target, applyOnlyObservables) {
+    data = data || {};
+    target = target || {};
+    applyOnlyObservables = applyOnlyObservables === undefined ? true : applyOnlyObservables;
+
+    let keys = Object.keys(data);
+
+    keys.forEach((key) => {
+      let outerValue = data[key];
+      let isObservable = ko.isObservable(outerValue);
+
+      if (isObservable || !applyOnlyObservables) {
+        let observer = this.getObserver(target, key);
+
+        if (observer && observer instanceof BehaviorPropertyObserver) {
+          observer.setValue(isObservable ? ko.unwrap(outerValue) : outerValue);
+        }
+
+        if (isObservable) {
+          this.subscriptions.push(outerValue.subscribe((newValue) => {
+            observer.setValue(newValue);
+          }));
+        }
+      }
+    });
+
+
+    let originalUnbind = target.unbind;
+
+    target.unbind = () => {
+      this.subscriptions.forEach((subscription) => {
+        subscription.dispose();
+      });
+
+      this.subscriptions = [];
+
+      if (originalUnbind) {
+        originalUnbind.call(target);
+      }
+    };
+  }
+
+  getObserver(target, key) {
+    return this.observerLocator.getObserver(target, key);
   }
 }
 

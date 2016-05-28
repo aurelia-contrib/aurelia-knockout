@@ -35,6 +35,7 @@
       "knockout": "^3.4.0"
     },
     "devDependencies": {
+      "aurelia-binding": "^1.0.0-beta.1.3.6",
       "aurelia-dependency-injection": "1.0.0-beta.1.2.2",
       "aurelia-loader": "1.0.0-beta.1.2.0",
       "babel": "babel-core@^5.8.38",
