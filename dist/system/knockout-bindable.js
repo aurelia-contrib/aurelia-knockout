@@ -1,6 +1,8 @@
 'use strict';
 
 System.register(['aurelia-binding', 'aurelia-templating', 'aurelia-dependency-injection'], function (_export, _context) {
+  "use strict";
+
   var ObserverLocator, BehaviorPropertyObserver, inject, _dec, _class, KnockoutBindable;
 
   function _classCallCheck(instance, Constructor) {

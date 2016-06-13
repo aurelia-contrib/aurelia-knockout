@@ -1,6 +1,8 @@
 'use strict';
 
 System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', 'aurelia-templating'], function (_export, _context) {
+  "use strict";
+
   var ko, Container, inject, Loader, ViewSlot, CompositionEngine, _typeof, _dec, _class, KnockoutComposition;
 
   function _classCallCheck(instance, Constructor) {

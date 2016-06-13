@@ -1,6 +1,8 @@
 'use strict';
 
 System.register(['./aurelia-knockout-custom-attribute', './knockout-composition', './knockout-bindable'], function (_export, _context) {
+  "use strict";
+
   var KnockoutCustomAttribute, KnockoutComposition, KnockoutBindable;
 
 
