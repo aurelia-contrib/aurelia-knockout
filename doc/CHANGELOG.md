@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 0.2.1
+
+Released on June 14, 2016.
+
+-   Added missing aurelia dependencies in ```package.json``` and ```config.json```. Fixes [#3](https://github.com/code-chris/aurelia-knockout/issues/3)
+
+
 ## Version 0.2.0
 
 Released on May 28, 2016.
