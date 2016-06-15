@@ -78,7 +78,7 @@ export class KnockoutComposition {
     // See http://durandaljs.com/documentation/Using-Composition.html
 
     if (typeof value === 'string') {
-      if (this.endsWith(value, '.html')) {
+      if (endsWith(value, '.html')) {
         // The name of the html view (assuming that the model name is equivalent to the view)
         view = value;
         moduleId = value.substr(0, value.length - 5);
@@ -120,7 +120,7 @@ export class KnockoutComposition {
     let settings = { view: view, viewModel: viewModel, model: activationData };
 
     if (!viewModel && moduleId) {
-      return this.loadModule(moduleId).then((modelInstance) => {
+      return this.getViewModelInstance(moduleId).then((modelInstance) => {
         settings.viewModel = modelInstance;
         return Promise.resolve(settings);
       });
@@ -130,17 +130,45 @@ export class KnockoutComposition {
   }
 
   loadModule(moduleId) {
-    return this.loader.loadModule(moduleId).then((result) => {
+    return this.loader.loadModule(moduleId);
+  }
+
+  getViewModelInstance(moduleId) {
+    let index = moduleId.lastIndexOf("/");
+    let fileName = moduleId.substr(index === -1 ? 0 : index + 1).toLowerCase();
+
+    return this.loadModule(moduleId).then((result) => {
       if (typeof result !== 'function') {
-        //result = result[Object.keys(result)[0]];
-        return result;
+        // Try to find a property which name matches the filename of the module
+        let constructorPropName = getMatchingProperty(result, fileName);
+
+        if (constructorPropName) {
+          // Use function of property.
+          // This occurs if the constructor function is exported by the module.
+          result = result[constructorPropName];
+        } else {
+          // The module returns an instance.
+          return result;
+        }
       }
 
       return this.container.get(result);
     });
   }
+}
 
-  endsWith(s, suffix) {
-    return s.indexOf(suffix, s.length - suffix.length) !== -1;
+function endsWith(s, suffix) {
+  return s.indexOf(suffix, s.length - suffix.length) !== -1;
+}
+
+function getMatchingProperty(result, propName) {
+  let properties = Object.keys(result);
+  for (let index = 0; index < properties.length; index++) {
+    let prop = properties[index].toLowerCase();
+    if (prop.indexOf(propName) !== -1) {
+      return properties[index];
+    }
   }
+
+  return null;
 }

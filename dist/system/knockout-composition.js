@@ -11,6 +11,21 @@ System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', '
     }
   }
 
+  function endsWith(s, suffix) {
+    return s.indexOf(suffix, s.length - suffix.length) !== -1;
+  }
+
+  function getMatchingProperty(result, propName) {
+    var properties = Object.keys(result);
+    for (var index = 0; index < properties.length; index++) {
+      var prop = properties[index].toLowerCase();
+      if (prop.indexOf(propName) !== -1) {
+        return properties[index];
+      }
+    }
+
+    return null;
+  }
   return {
     setters: [function (_knockout) {
       ko = _knockout;
@@ -106,7 +121,7 @@ System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', '
           var activationData = void 0;
 
           if (typeof value === 'string') {
-            if (this.endsWith(value, '.html')) {
+            if (endsWith(value, '.html')) {
               view = value;
               moduleId = value.substr(0, value.length - 5);
             } else {
@@ -140,7 +155,7 @@ System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', '
           var settings = { view: view, viewModel: viewModel, model: activationData };
 
           if (!viewModel && moduleId) {
-            return this.loadModule(moduleId).then(function (modelInstance) {
+            return this.getViewModelInstance(moduleId).then(function (modelInstance) {
               settings.viewModel = modelInstance;
               return Promise.resolve(settings);
             });
@@ -150,19 +165,28 @@ System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', '
         };
 
         KnockoutComposition.prototype.loadModule = function loadModule(moduleId) {
+          return this.loader.loadModule(moduleId);
+        };
+
+        KnockoutComposition.prototype.getViewModelInstance = function getViewModelInstance(moduleId) {
           var _this3 = this;
 
-          return this.loader.loadModule(moduleId).then(function (result) {
+          var index = moduleId.lastIndexOf("/");
+          var fileName = moduleId.substr(index === -1 ? 0 : index + 1).toLowerCase();
+
+          return this.loadModule(moduleId).then(function (result) {
             if (typeof result !== 'function') {
-              return result;
+              var constructorPropName = getMatchingProperty(result, fileName);
+
+              if (constructorPropName) {
+                result = result[constructorPropName];
+              } else {
+                return result;
+              }
             }
 
             return _this3.container.get(result);
           });
-        };
-
-        KnockoutComposition.prototype.endsWith = function endsWith(s, suffix) {
-          return s.indexOf(suffix, s.length - suffix.length) !== -1;
         };
 
         return KnockoutComposition;

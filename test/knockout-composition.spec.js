@@ -8,7 +8,7 @@ describe('knockout composition', function() {
     viewModelInstance = Promise.resolve({ prop: "myInstance", test: () => {} });
 
     knockoutComposition = new KnockoutComposition(null, null, null);
-    knockoutComposition.loadModule = jasmine.createSpy("loadModule func").and.returnValue(viewModelInstance);
+    knockoutComposition.getViewModelInstance = jasmine.createSpy("getViewModelInstance func").and.returnValue(viewModelInstance);
   });
 
   it('registers knockout custom binding', () => {

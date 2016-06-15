@@ -76,7 +76,7 @@ export let KnockoutComposition = (_dec = inject(CompositionEngine, Container, Lo
     let activationData;
 
     if (typeof value === 'string') {
-      if (this.endsWith(value, '.html')) {
+      if (endsWith(value, '.html')) {
         view = value;
         moduleId = value.substr(0, value.length - 5);
       } else {
@@ -110,7 +110,7 @@ export let KnockoutComposition = (_dec = inject(CompositionEngine, Container, Lo
     let settings = { view: view, viewModel: viewModel, model: activationData };
 
     if (!viewModel && moduleId) {
-      return this.loadModule(moduleId).then(modelInstance => {
+      return this.getViewModelInstance(moduleId).then(modelInstance => {
         settings.viewModel = modelInstance;
         return Promise.resolve(settings);
       });
@@ -120,16 +120,41 @@ export let KnockoutComposition = (_dec = inject(CompositionEngine, Container, Lo
   }
 
   loadModule(moduleId) {
-    return this.loader.loadModule(moduleId).then(result => {
+    return this.loader.loadModule(moduleId);
+  }
+
+  getViewModelInstance(moduleId) {
+    let index = moduleId.lastIndexOf("/");
+    let fileName = moduleId.substr(index === -1 ? 0 : index + 1).toLowerCase();
+
+    return this.loadModule(moduleId).then(result => {
       if (typeof result !== 'function') {
-        return result;
+        let constructorPropName = getMatchingProperty(result, fileName);
+
+        if (constructorPropName) {
+          result = result[constructorPropName];
+        } else {
+          return result;
+        }
       }
 
       return this.container.get(result);
     });
   }
-
-  endsWith(s, suffix) {
-    return s.indexOf(suffix, s.length - suffix.length) !== -1;
-  }
 }) || _class);
+
+function endsWith(s, suffix) {
+  return s.indexOf(suffix, s.length - suffix.length) !== -1;
+}
+
+function getMatchingProperty(result, propName) {
+  let properties = Object.keys(result);
+  for (let index = 0; index < properties.length; index++) {
+    let prop = properties[index].toLowerCase();
+    if (prop.indexOf(propName) !== -1) {
+      return properties[index];
+    }
+  }
+
+  return null;
+}

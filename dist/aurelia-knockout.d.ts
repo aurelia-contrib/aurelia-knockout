@@ -25,7 +25,7 @@ declare module 'aurelia-knockout' {
     processInstruction(ctx?: any, instruction?: any): any;
     buildCompositionSettings(value?: any, bindingContext?: any): any;
     loadModule(moduleId?: any): any;
-    endsWith(s?: any, suffix?: any): any;
+    getViewModelInstance(moduleId?: any): any;
   }
   export class KnockoutBindable {
     observerLocator: any;
