@@ -7,6 +7,9 @@
 
 ## Dependencies
 
+* [aurelia-binding](https://github.com/aurelia/binding)
+* [aurelia-dependency-injection](https://github.com/aurelia/dependency-injection)
+* [aurelia-loader](https://github.com/aurelia/loader)
 * [aurelia-templating](https://github.com/aurelia/templating)
 * [knockout](https://github.com/knockout/knockout)
 
