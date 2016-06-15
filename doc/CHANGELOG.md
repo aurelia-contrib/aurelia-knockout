@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.2.2
+
+Released on June 15, 2016.
+
+-   Composition failed if backing view-model returns an instance instead of returning or exporting the constructor function. Fixes [#4](https://github.com/code-chris/aurelia-knockout/issues/4)
+-   Documentation fixes
+
+
 ## Version 0.2.1
 
 Released on June 14, 2016.
