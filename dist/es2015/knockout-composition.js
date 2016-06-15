@@ -122,7 +122,7 @@ export let KnockoutComposition = (_dec = inject(CompositionEngine, Container, Lo
   loadModule(moduleId) {
     return this.loader.loadModule(moduleId).then(result => {
       if (typeof result !== 'function') {
-        result = result[Object.keys(result)[0]];
+        return result;
       }
 
       return this.container.get(result);

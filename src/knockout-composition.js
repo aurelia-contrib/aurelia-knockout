@@ -132,7 +132,8 @@ export class KnockoutComposition {
   loadModule(moduleId) {
     return this.loader.loadModule(moduleId).then((result) => {
       if (typeof result !== 'function') {
-        result = result[Object.keys(result)[0]];
+        //result = result[Object.keys(result)[0]];
+        return result;
       }
 
       return this.container.get(result);

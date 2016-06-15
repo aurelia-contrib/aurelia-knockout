@@ -154,7 +154,7 @@ System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', '
 
           return this.loader.loadModule(moduleId).then(function (result) {
             if (typeof result !== 'function') {
-              result = result[Object.keys(result)[0]];
+              return result;
             }
 
             return _this3.container.get(result);
