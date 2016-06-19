@@ -5,11 +5,7 @@ System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', '
 
   var ko, Container, inject, Loader, ViewSlot, CompositionEngine, _typeof, _dec, _class, KnockoutComposition;
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
+  
 
   function endsWith(s, suffix) {
     return s.indexOf(suffix, s.length - suffix.length) !== -1;
@@ -47,7 +43,7 @@ System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', '
 
       _export('KnockoutComposition', KnockoutComposition = (_dec = inject(CompositionEngine, Container, Loader), _dec(_class = function () {
         function KnockoutComposition(compositionEngine, container, loader) {
-          _classCallCheck(this, KnockoutComposition);
+          
 
           this.compositionEngine = compositionEngine;
           this.container = container;

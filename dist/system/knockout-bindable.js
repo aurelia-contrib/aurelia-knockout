@@ -5,11 +5,7 @@ System.register(['aurelia-binding', 'aurelia-templating', 'aurelia-dependency-in
 
   var ObserverLocator, BehaviorPropertyObserver, inject, _dec, _class, KnockoutBindable;
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
+  
 
   return {
     setters: [function (_aureliaBinding) {
@@ -22,7 +18,7 @@ System.register(['aurelia-binding', 'aurelia-templating', 'aurelia-dependency-in
     execute: function () {
       _export('KnockoutBindable', KnockoutBindable = (_dec = inject(ObserverLocator), _dec(_class = function () {
         function KnockoutBindable(observerLocator) {
-          _classCallCheck(this, KnockoutBindable);
+          
 
           this.subscriptions = [];
 

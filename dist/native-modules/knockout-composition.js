@@ -1,29 +1,15 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.KnockoutComposition = undefined;
-
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 var _dec, _class;
 
-var _knockout = require('knockout');
-
-var ko = _interopRequireWildcard(_knockout);
-
-var _aureliaDependencyInjection = require('aurelia-dependency-injection');
-
-var _aureliaLoader = require('aurelia-loader');
-
-var _aureliaTemplating = require('aurelia-templating');
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 
+import * as ko from 'knockout';
+import { Container, inject } from 'aurelia-dependency-injection';
+import { Loader } from 'aurelia-loader';
+import { ViewSlot, CompositionEngine } from 'aurelia-templating';
 
-var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDependencyInjection.inject)(_aureliaTemplating.CompositionEngine, _aureliaDependencyInjection.Container, _aureliaLoader.Loader), _dec(_class = function () {
+export var KnockoutComposition = (_dec = inject(CompositionEngine, Container, Loader), _dec(_class = function () {
   function KnockoutComposition(compositionEngine, container, loader) {
     
 
@@ -75,7 +61,7 @@ var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDepe
   };
 
   KnockoutComposition.prototype.composeElementInstruction = function composeElementInstruction(element, instruction, ctx) {
-    instruction.viewSlot = instruction.viewSlot || new _aureliaTemplating.ViewSlot(element, true, ctx);
+    instruction.viewSlot = instruction.viewSlot || new ViewSlot(element, true, ctx);
     return this.processInstruction(ctx, instruction);
   };
 
@@ -169,7 +155,6 @@ var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDepe
 
   return KnockoutComposition;
 }()) || _class);
-
 
 function endsWith(s, suffix) {
   return s.indexOf(suffix, s.length - suffix.length) !== -1;

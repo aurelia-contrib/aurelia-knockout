@@ -1,21 +1,12 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.KnockoutBindable = undefined;
-
 var _dec, _class;
 
-var _aureliaBinding = require('aurelia-binding');
-
-var _aureliaTemplating = require('aurelia-templating');
-
-var _aureliaDependencyInjection = require('aurelia-dependency-injection');
 
 
+import { ObserverLocator } from 'aurelia-binding';
+import { BehaviorPropertyObserver } from 'aurelia-templating';
+import { inject } from 'aurelia-dependency-injection';
 
-var KnockoutBindable = exports.KnockoutBindable = (_dec = (0, _aureliaDependencyInjection.inject)(_aureliaBinding.ObserverLocator), _dec(_class = function () {
+export var KnockoutBindable = (_dec = inject(ObserverLocator), _dec(_class = function () {
   function KnockoutBindable(observerLocator) {
     
 
@@ -41,7 +32,7 @@ var KnockoutBindable = exports.KnockoutBindable = (_dec = (0, _aureliaDependency
         (function () {
           var observer = _this.getObserver(target, key);
 
-          if (observer && observer instanceof _aureliaTemplating.BehaviorPropertyObserver) {
+          if (observer && observer instanceof BehaviorPropertyObserver) {
             observer.setValue(isObservable ? ko.unwrap(outerValue) : outerValue);
           }
 

@@ -5,11 +5,7 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating'], function
 
   var inject, customAttribute, _dec, _dec2, _class, KnockoutCustomAttribute;
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
+  
 
   return {
     setters: [function (_aureliaDependencyInjection) {
@@ -20,7 +16,7 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating'], function
     execute: function () {
       _export('KnockoutCustomAttribute', KnockoutCustomAttribute = (_dec = customAttribute('knockout'), _dec2 = inject(Element), _dec(_class = _dec2(_class = function () {
         function KnockoutCustomAttribute(element) {
-          _classCallCheck(this, KnockoutCustomAttribute);
+          
 
           this.element = element;
         }

@@ -6,17 +6,13 @@ define(['exports', 'aurelia-binding', 'aurelia-templating', 'aurelia-dependency-
   });
   exports.KnockoutBindable = undefined;
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
+  
 
   var _dec, _class;
 
   var KnockoutBindable = exports.KnockoutBindable = (_dec = (0, _aureliaDependencyInjection.inject)(_aureliaBinding.ObserverLocator), _dec(_class = function () {
     function KnockoutBindable(observerLocator) {
-      _classCallCheck(this, KnockoutBindable);
+      
 
       this.subscriptions = [];
 

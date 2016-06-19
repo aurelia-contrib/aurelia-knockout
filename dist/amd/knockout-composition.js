@@ -31,17 +31,13 @@ define(['exports', 'knockout', 'aurelia-dependency-injection', 'aurelia-loader',
     return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
   };
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
+  
 
   var _dec, _class;
 
   var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDependencyInjection.inject)(_aureliaTemplating.CompositionEngine, _aureliaDependencyInjection.Container, _aureliaLoader.Loader), _dec(_class = function () {
     function KnockoutComposition(compositionEngine, container, loader) {
-      _classCallCheck(this, KnockoutComposition);
+      
 
       this.compositionEngine = compositionEngine;
       this.container = container;
