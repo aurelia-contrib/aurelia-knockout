@@ -1,5 +1,16 @@
 # Changelog
 
+## Version 1.0.0
+
+Released on June 19, 2016.
+
+-   Updated build infrastructure
+-   Updated dependencies
+-   Added code docs
+-   Added typings support
+-   Shrunk typescript definitions
+
+
 ## Version 0.2.2
 
 Released on June 15, 2016.
