@@ -32,10 +32,10 @@
       "lib": "dist/amd"
     },
     "dependencies": {
-      "aurelia-binding": "^1.0.0-beta.2.0.0",
-      "aurelia-dependency-injection": "^1.0.0-beta.2.0.1",
-      "aurelia-loader": "^1.0.0-beta.2.0.0",
-      "aurelia-templating": "^1.0.0-beta.3.0.2",
+      "aurelia-binding": "^1.0.0-beta.2.0.7",
+      "aurelia-dependency-injection": "^1.0.0-beta.2.1.1",
+      "aurelia-loader": "^1.0.0-beta.2.0.1",
+      "aurelia-templating": "^1.0.0-beta.3.0.5",
       "knockout": "^3.4.0"
     },
     "devDependencies": {
@@ -91,10 +91,10 @@
     "yargs": "^4.7.1"
   },
   "dependencies": {
-    "aurelia-binding": "^1.0.0-beta.2.0.0",
-    "aurelia-dependency-injection": "^1.0.0-beta.2.0.1",
-    "aurelia-loader": "^1.0.0-beta.2.0.0",
-    "aurelia-templating": "^1.0.0-beta.3.0.2",
+    "aurelia-binding": "^1.0.0-beta.2.0.7",
+    "aurelia-dependency-injection": "^1.0.0-beta.2.1.1",
+    "aurelia-loader": "^1.0.0-beta.2.0.1",
+    "aurelia-templating": "^1.0.0-beta.3.0.5",
     "knockout": "^3.4.0"
   }
 }
