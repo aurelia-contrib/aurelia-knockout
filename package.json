@@ -4,6 +4,7 @@
   "main": "dist/commonjs/aurelia-knockout.js",
   "author": "Christian Kotzbauer <christian.kotzbauer@gmail.com>",
   "license": "MIT",
+  "typings": "dist/aurelia-knockout.d.ts",
   "description": "A Knockout plugin for Aurelia.",
   "keywords": [
     "aurelia",

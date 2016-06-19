@@ -1,0 +1,10 @@
+{
+  "name": "aurelia-knockout",
+  "main": "dist/aurelia-knockout.d.ts",
+  "dependencies": {
+    "aurelia-binding": "github:aurelia/binding#2d879f872e0e9864c0eb8903df451e7f19aab48f",
+    "aurelia-dependency-injection": "github:aurelia/dependency-injection#47f2460cee5a689751e9ae674ac23f918cc2ffc1",
+    "aurelia-loader": "github:aurelia/loader#0c0911fd818aebcdc212a2023636c0fb688d3284",
+    "aurelia-templating": "github:aurelia/templating#1bcbf6ae816deb7e962604ce85b87a75721f124c"
+  }
+}
