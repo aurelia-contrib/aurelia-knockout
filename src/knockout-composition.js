@@ -3,16 +3,78 @@ import {Container, inject} from 'aurelia-dependency-injection';
 import {Loader} from 'aurelia-loader';
 import {ViewSlot, CompositionEngine} from 'aurelia-templating';
 
+
+function endsWith(s, suffix) {
+  return s.indexOf(suffix, s.length - suffix.length) !== -1;
+}
+
+function getMatchingProperty(result, propName) {
+  let properties = Object.keys(result);
+  for (let index = 0; index < properties.length; index++) {
+    let prop = properties[index].toLowerCase();
+    if (prop.indexOf(propName) !== -1) {
+      return properties[index];
+    }
+  }
+
+  return null;
+}
+
+function callEvent(element, eventName, args) {
+  let viewModel = ko.dataFor(element.children[0]);
+
+  let func = viewModel[eventName];
+
+  if (func && typeof func === 'function') {
+    func.apply(viewModel, args);
+  }
+}
+
+function doComposition(element, unwrappedValue, viewModel) {
+  this.buildCompositionSettings(unwrappedValue, viewModel).then((settings) => {
+    composeElementInstruction.call(this, element, settings).then(() => {
+      callEvent(element, 'compositionComplete', [element, element.parentElement]);
+    });
+  });
+}
+
+function composeElementInstruction(element, instruction) {
+  instruction.viewSlot = instruction.viewSlot || new ViewSlot(element, true, this);
+  return processInstruction.call(this, instruction);
+}
+
+function processInstruction(instruction) {
+  instruction.container = instruction.container || this.container;
+  instruction.executionContext = instruction.executionContext || this;
+  instruction.viewSlot = instruction.viewSlot || this.viewSlot;
+  instruction.viewResources = instruction.viewResources || this.viewResources;
+  instruction.currentBehavior = instruction.currentBehavior || this.currentBehavior;
+
+  return this.compositionEngine.compose(instruction).then((next) => {
+    this.currentBehavior = next;
+    this.currentViewModel = next ? next.executionContext : null;
+  });
+}
+
+function loadModule(moduleId, loader) {
+  return loader.loadModule(moduleId);
+}
+
+
+
 @inject(CompositionEngine, Container, Loader)
 export class KnockoutComposition {
 
-  constructor(compositionEngine, container, loader) {
+  constructor(compositionEngine: CompositionEngine, container: Container, loader: Loader) {
     this.compositionEngine = compositionEngine;
     this.container = container;
     this.loader = loader;
   }
 
-  register() {
+  /**
+   * Registers the `compose` Knockout Binding to use Compositions in your Views.
+   */
+  register(): void {
     window.ko = ko;
 
     ko.bindingHandlers.compose = {
@@ -21,55 +83,20 @@ export class KnockoutComposition {
 
         if (element.childElementCount > 0) {
           // Remove previous composed view
-          this.callEvent(element, 'detached', [element, element.parentElement]);
+          callEvent(element, 'detached', [element, element.parentElement]);
 
           while (element.firstChild) {
             element.removeChild(element.firstChild);
           }
         }
 
-        this.doComposition(element, ko.unwrap(value), viewModel);
+        doComposition.call(this, element, ko.unwrap(value), viewModel);
       }
     };
   }
 
-  callEvent(element, eventName, args) {
-    let viewModel = ko.dataFor(element.children[0]);
-
-    let func = viewModel[eventName];
-
-    if (func && typeof func === 'function') {
-      func.apply(viewModel, args);
-    }
-  }
-
-  doComposition(element, unwrappedValue, viewModel) {
-    this.buildCompositionSettings(unwrappedValue, viewModel).then((settings) => {
-      this.composeElementInstruction(element, settings, this).then(() => {
-        this.callEvent(element, 'compositionComplete', [element, element.parentElement]);
-      });
-    });
-  }
-
-  composeElementInstruction(element, instruction, ctx) {
-    instruction.viewSlot = instruction.viewSlot || new ViewSlot(element, true, ctx);
-    return this.processInstruction(ctx, instruction);
-  }
-
-  processInstruction(ctx, instruction) {
-    instruction.container = instruction.container || ctx.container;
-    instruction.executionContext = instruction.executionContext || ctx;
-    instruction.viewSlot = instruction.viewSlot || ctx.viewSlot;
-    instruction.viewResources = instruction.viewResources || ctx.viewResources;
-    instruction.currentBehavior = instruction.currentBehavior || ctx.currentBehavior;
-
-    return this.compositionEngine.compose(instruction).then((next) => {
-      ctx.currentBehavior = next;
-      ctx.currentViewModel = next ? next.executionContext : null;
-    });
-  }
-
-  buildCompositionSettings(value, bindingContext) {
+  /** internal: do not use */
+  buildCompositionSettings(value: any, bindingContext: any): Promise<any> {
     let view;
     let moduleId;
     let viewModel;
@@ -129,15 +156,12 @@ export class KnockoutComposition {
     return Promise.resolve(settings);
   }
 
-  loadModule(moduleId) {
-    return this.loader.loadModule(moduleId);
-  }
-
-  getViewModelInstance(moduleId) {
+  /** internal: do not use */
+  getViewModelInstance(moduleId: string): Promise<any> {
     let index = moduleId.lastIndexOf("/");
     let fileName = moduleId.substr(index === -1 ? 0 : index + 1).toLowerCase();
 
-    return this.loadModule(moduleId).then((result) => {
+    return loadModule(moduleId, this.loader).then((result) => {
       if (typeof result !== 'function') {
         // Try to find a property which name matches the filename of the module
         let constructorPropName = getMatchingProperty(result, fileName);
@@ -155,20 +179,4 @@ export class KnockoutComposition {
       return this.container.get(result);
     });
   }
-}
-
-function endsWith(s, suffix) {
-  return s.indexOf(suffix, s.length - suffix.length) !== -1;
-}
-
-function getMatchingProperty(result, propName) {
-  let properties = Object.keys(result);
-  for (let index = 0; index < properties.length; index++) {
-    let prop = properties[index].toLowerCase();
-    if (prop.indexOf(propName) !== -1) {
-      return properties[index];
-    }
-  }
-
-  return null;
 }

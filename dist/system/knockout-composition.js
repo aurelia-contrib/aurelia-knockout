@@ -22,6 +22,51 @@ System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', '
 
     return null;
   }
+
+  function callEvent(element, eventName, args) {
+    var viewModel = ko.dataFor(element.children[0]);
+
+    var func = viewModel[eventName];
+
+    if (func && typeof func === 'function') {
+      func.apply(viewModel, args);
+    }
+  }
+
+  function doComposition(element, unwrappedValue, viewModel) {
+    var _this = this;
+
+    this.buildCompositionSettings(unwrappedValue, viewModel).then(function (settings) {
+      composeElementInstruction.call(_this, element, settings).then(function () {
+        callEvent(element, 'compositionComplete', [element, element.parentElement]);
+      });
+    });
+  }
+
+  function composeElementInstruction(element, instruction) {
+    instruction.viewSlot = instruction.viewSlot || new ViewSlot(element, true, this);
+    return processInstruction.call(this, instruction);
+  }
+
+  function processInstruction(instruction) {
+    var _this2 = this;
+
+    instruction.container = instruction.container || this.container;
+    instruction.executionContext = instruction.executionContext || this;
+    instruction.viewSlot = instruction.viewSlot || this.viewSlot;
+    instruction.viewResources = instruction.viewResources || this.viewResources;
+    instruction.currentBehavior = instruction.currentBehavior || this.currentBehavior;
+
+    return this.compositionEngine.compose(instruction).then(function (next) {
+      _this2.currentBehavior = next;
+      _this2.currentViewModel = next ? next.executionContext : null;
+    });
+  }
+
+  function loadModule(moduleId, loader) {
+    return loader.loadModule(moduleId);
+  }
+
   return {
     setters: [function (_knockout) {
       ko = _knockout;
@@ -51,7 +96,7 @@ System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', '
         }
 
         KnockoutComposition.prototype.register = function register() {
-          var _this = this;
+          var _this3 = this;
 
           window.ko = ko;
 
@@ -60,54 +105,16 @@ System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', '
               var value = valueAccessor();
 
               if (element.childElementCount > 0) {
-                _this.callEvent(element, 'detached', [element, element.parentElement]);
+                callEvent(element, 'detached', [element, element.parentElement]);
 
                 while (element.firstChild) {
                   element.removeChild(element.firstChild);
                 }
               }
 
-              _this.doComposition(element, ko.unwrap(value), viewModel);
+              doComposition.call(_this3, element, ko.unwrap(value), viewModel);
             }
           };
-        };
-
-        KnockoutComposition.prototype.callEvent = function callEvent(element, eventName, args) {
-          var viewModel = ko.dataFor(element.children[0]);
-
-          var func = viewModel[eventName];
-
-          if (func && typeof func === 'function') {
-            func.apply(viewModel, args);
-          }
-        };
-
-        KnockoutComposition.prototype.doComposition = function doComposition(element, unwrappedValue, viewModel) {
-          var _this2 = this;
-
-          this.buildCompositionSettings(unwrappedValue, viewModel).then(function (settings) {
-            _this2.composeElementInstruction(element, settings, _this2).then(function () {
-              _this2.callEvent(element, 'compositionComplete', [element, element.parentElement]);
-            });
-          });
-        };
-
-        KnockoutComposition.prototype.composeElementInstruction = function composeElementInstruction(element, instruction, ctx) {
-          instruction.viewSlot = instruction.viewSlot || new ViewSlot(element, true, ctx);
-          return this.processInstruction(ctx, instruction);
-        };
-
-        KnockoutComposition.prototype.processInstruction = function processInstruction(ctx, instruction) {
-          instruction.container = instruction.container || ctx.container;
-          instruction.executionContext = instruction.executionContext || ctx;
-          instruction.viewSlot = instruction.viewSlot || ctx.viewSlot;
-          instruction.viewResources = instruction.viewResources || ctx.viewResources;
-          instruction.currentBehavior = instruction.currentBehavior || ctx.currentBehavior;
-
-          return this.compositionEngine.compose(instruction).then(function (next) {
-            ctx.currentBehavior = next;
-            ctx.currentViewModel = next ? next.executionContext : null;
-          });
         };
 
         KnockoutComposition.prototype.buildCompositionSettings = function buildCompositionSettings(value, bindingContext) {
@@ -160,17 +167,13 @@ System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', '
           return Promise.resolve(settings);
         };
 
-        KnockoutComposition.prototype.loadModule = function loadModule(moduleId) {
-          return this.loader.loadModule(moduleId);
-        };
-
         KnockoutComposition.prototype.getViewModelInstance = function getViewModelInstance(moduleId) {
-          var _this3 = this;
+          var _this4 = this;
 
           var index = moduleId.lastIndexOf("/");
           var fileName = moduleId.substr(index === -1 ? 0 : index + 1).toLowerCase();
 
-          return this.loadModule(moduleId).then(function (result) {
+          return loadModule(moduleId, this.loader).then(function (result) {
             if (typeof result !== 'function') {
               var constructorPropName = getMatchingProperty(result, fileName);
 
@@ -181,7 +184,7 @@ System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', '
               }
             }
 
-            return _this3.container.get(result);
+            return _this4.container.get(result);
           });
         };
 

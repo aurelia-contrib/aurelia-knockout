@@ -25,6 +25,66 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function endsWith(s, suffix) {
+  return s.indexOf(suffix, s.length - suffix.length) !== -1;
+}
+
+function getMatchingProperty(result, propName) {
+  var properties = Object.keys(result);
+  for (var index = 0; index < properties.length; index++) {
+    var prop = properties[index].toLowerCase();
+    if (prop.indexOf(propName) !== -1) {
+      return properties[index];
+    }
+  }
+
+  return null;
+}
+
+function callEvent(element, eventName, args) {
+  var viewModel = ko.dataFor(element.children[0]);
+
+  var func = viewModel[eventName];
+
+  if (func && typeof func === 'function') {
+    func.apply(viewModel, args);
+  }
+}
+
+function doComposition(element, unwrappedValue, viewModel) {
+  var _this = this;
+
+  this.buildCompositionSettings(unwrappedValue, viewModel).then(function (settings) {
+    composeElementInstruction.call(_this, element, settings).then(function () {
+      callEvent(element, 'compositionComplete', [element, element.parentElement]);
+    });
+  });
+}
+
+function composeElementInstruction(element, instruction) {
+  instruction.viewSlot = instruction.viewSlot || new _aureliaTemplating.ViewSlot(element, true, this);
+  return processInstruction.call(this, instruction);
+}
+
+function processInstruction(instruction) {
+  var _this2 = this;
+
+  instruction.container = instruction.container || this.container;
+  instruction.executionContext = instruction.executionContext || this;
+  instruction.viewSlot = instruction.viewSlot || this.viewSlot;
+  instruction.viewResources = instruction.viewResources || this.viewResources;
+  instruction.currentBehavior = instruction.currentBehavior || this.currentBehavior;
+
+  return this.compositionEngine.compose(instruction).then(function (next) {
+    _this2.currentBehavior = next;
+    _this2.currentViewModel = next ? next.executionContext : null;
+  });
+}
+
+function loadModule(moduleId, loader) {
+  return loader.loadModule(moduleId);
+}
+
 var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDependencyInjection.inject)(_aureliaTemplating.CompositionEngine, _aureliaDependencyInjection.Container, _aureliaLoader.Loader), _dec(_class = function () {
   function KnockoutComposition(compositionEngine, container, loader) {
     _classCallCheck(this, KnockoutComposition);
@@ -35,7 +95,7 @@ var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDepe
   }
 
   KnockoutComposition.prototype.register = function register() {
-    var _this = this;
+    var _this3 = this;
 
     window.ko = ko;
 
@@ -44,54 +104,16 @@ var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDepe
         var value = valueAccessor();
 
         if (element.childElementCount > 0) {
-          _this.callEvent(element, 'detached', [element, element.parentElement]);
+          callEvent(element, 'detached', [element, element.parentElement]);
 
           while (element.firstChild) {
             element.removeChild(element.firstChild);
           }
         }
 
-        _this.doComposition(element, ko.unwrap(value), viewModel);
+        doComposition.call(_this3, element, ko.unwrap(value), viewModel);
       }
     };
-  };
-
-  KnockoutComposition.prototype.callEvent = function callEvent(element, eventName, args) {
-    var viewModel = ko.dataFor(element.children[0]);
-
-    var func = viewModel[eventName];
-
-    if (func && typeof func === 'function') {
-      func.apply(viewModel, args);
-    }
-  };
-
-  KnockoutComposition.prototype.doComposition = function doComposition(element, unwrappedValue, viewModel) {
-    var _this2 = this;
-
-    this.buildCompositionSettings(unwrappedValue, viewModel).then(function (settings) {
-      _this2.composeElementInstruction(element, settings, _this2).then(function () {
-        _this2.callEvent(element, 'compositionComplete', [element, element.parentElement]);
-      });
-    });
-  };
-
-  KnockoutComposition.prototype.composeElementInstruction = function composeElementInstruction(element, instruction, ctx) {
-    instruction.viewSlot = instruction.viewSlot || new _aureliaTemplating.ViewSlot(element, true, ctx);
-    return this.processInstruction(ctx, instruction);
-  };
-
-  KnockoutComposition.prototype.processInstruction = function processInstruction(ctx, instruction) {
-    instruction.container = instruction.container || ctx.container;
-    instruction.executionContext = instruction.executionContext || ctx;
-    instruction.viewSlot = instruction.viewSlot || ctx.viewSlot;
-    instruction.viewResources = instruction.viewResources || ctx.viewResources;
-    instruction.currentBehavior = instruction.currentBehavior || ctx.currentBehavior;
-
-    return this.compositionEngine.compose(instruction).then(function (next) {
-      ctx.currentBehavior = next;
-      ctx.currentViewModel = next ? next.executionContext : null;
-    });
   };
 
   KnockoutComposition.prototype.buildCompositionSettings = function buildCompositionSettings(value, bindingContext) {
@@ -144,17 +166,13 @@ var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDepe
     return Promise.resolve(settings);
   };
 
-  KnockoutComposition.prototype.loadModule = function loadModule(moduleId) {
-    return this.loader.loadModule(moduleId);
-  };
-
   KnockoutComposition.prototype.getViewModelInstance = function getViewModelInstance(moduleId) {
-    var _this3 = this;
+    var _this4 = this;
 
     var index = moduleId.lastIndexOf("/");
     var fileName = moduleId.substr(index === -1 ? 0 : index + 1).toLowerCase();
 
-    return this.loadModule(moduleId).then(function (result) {
+    return loadModule(moduleId, this.loader).then(function (result) {
       if (typeof result !== 'function') {
         var constructorPropName = getMatchingProperty(result, fileName);
 
@@ -165,30 +183,12 @@ var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDepe
         }
       }
 
-      return _this3.container.get(result);
+      return _this4.container.get(result);
     });
   };
 
   return KnockoutComposition;
 }()) || _class);
-
-
-function endsWith(s, suffix) {
-  return s.indexOf(suffix, s.length - suffix.length) !== -1;
-}
-
-function getMatchingProperty(result, propName) {
-  var properties = Object.keys(result);
-  for (var index = 0; index < properties.length; index++) {
-    var prop = properties[index].toLowerCase();
-    if (prop.indexOf(propName) !== -1) {
-      return properties[index];
-    }
-  }
-
-  return null;
-}
-
 var KnockoutBindable = exports.KnockoutBindable = (_dec2 = (0, _aureliaDependencyInjection.inject)(_aureliaBinding.ObserverLocator), _dec2(_class2 = function () {
   function KnockoutBindable(observerLocator) {
     _classCallCheck(this, KnockoutBindable);
@@ -199,7 +199,7 @@ var KnockoutBindable = exports.KnockoutBindable = (_dec2 = (0, _aureliaDependenc
   }
 
   KnockoutBindable.prototype.applyBindableValues = function applyBindableValues(data, target, applyOnlyObservables) {
-    var _this4 = this;
+    var _this5 = this;
 
     data = data || {};
     target = target || {};
@@ -213,14 +213,14 @@ var KnockoutBindable = exports.KnockoutBindable = (_dec2 = (0, _aureliaDependenc
 
       if (isObservable || !applyOnlyObservables) {
         (function () {
-          var observer = _this4.getObserver(target, key);
+          var observer = _this5.getObserver(target, key);
 
           if (observer && observer instanceof _aureliaTemplating.BehaviorPropertyObserver) {
             observer.setValue(isObservable ? ko.unwrap(outerValue) : outerValue);
           }
 
           if (isObservable) {
-            _this4.subscriptions.push(outerValue.subscribe(function (newValue) {
+            _this5.subscriptions.push(outerValue.subscribe(function (newValue) {
               observer.setValue(newValue);
             }));
           }
@@ -231,11 +231,11 @@ var KnockoutBindable = exports.KnockoutBindable = (_dec2 = (0, _aureliaDependenc
     var originalUnbind = target.unbind;
 
     target.unbind = function () {
-      _this4.subscriptions.forEach(function (subscription) {
+      _this5.subscriptions.forEach(function (subscription) {
         subscription.dispose();
       });
 
-      _this4.subscriptions = [];
+      _this5.subscriptions = [];
 
       if (originalUnbind) {
         originalUnbind.call(target);
