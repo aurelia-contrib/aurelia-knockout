@@ -10,6 +10,8 @@ System.register(['./aurelia-knockout-custom-attribute', './knockout-composition'
     frameworkConfig.globalResources('./aurelia-knockout-custom-attribute');
 
     frameworkConfig.container.get(KnockoutComposition).register();
+
+    KnockoutCustomAttribute.register();
   }
 
   return {

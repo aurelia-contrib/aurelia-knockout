@@ -8,6 +8,9 @@ function configure(frameworkConfig) {
 
   // register knockout custom binding for composition logic
   frameworkConfig.container.get(KnockoutComposition).register();
+
+  // register stopKoBindings custom binding
+  KnockoutCustomAttribute.register();
 }
 
 export {

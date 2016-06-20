@@ -11,6 +11,8 @@ define(['exports', './aurelia-knockout-custom-attribute', './knockout-compositio
     frameworkConfig.globalResources('./aurelia-knockout-custom-attribute');
 
     frameworkConfig.container.get(_knockoutComposition.KnockoutComposition).register();
+
+    _aureliaKnockoutCustomAttribute.KnockoutCustomAttribute.register();
   }
 
   exports.KnockoutCustomAttribute = _aureliaKnockoutCustomAttribute.KnockoutCustomAttribute;

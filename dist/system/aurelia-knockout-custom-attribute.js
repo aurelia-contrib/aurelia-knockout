@@ -7,6 +7,23 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating'], function
 
   
 
+  function getFirstBoundChild(rootNode) {
+    var data = ko.dataFor(rootNode);
+    if (data) {
+      return rootNode;
+    }
+
+    for (var i = 0; i < rootNode.children.length; i++) {
+      var child = rootNode.children[i];
+      var childData = getFirstBoundChild(child);
+      if (childData) {
+        return childData;
+      }
+    }
+
+    return null;
+  }
+
   return {
     setters: [function (_aureliaDependencyInjection) {
       inject = _aureliaDependencyInjection.inject;
@@ -21,7 +38,27 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating'], function
           this.element = element;
         }
 
+        KnockoutCustomAttribute.register = function register() {
+          ko.bindingHandlers.stopKoBinding = {
+            init: function init() {
+              return { controlsDescendantBindings: true };
+            }
+          };
+
+          ko.virtualElements.allowedBindings.stopKoBinding = true;
+        };
+
         KnockoutCustomAttribute.prototype.bind = function bind(executionContext) {
+          var data = getFirstBoundChild(this.element);
+          if (data) {
+            var startComment = document.createComment(" ko stopKoBinding: true ");
+            var endComment = document.createComment(" /ko ");
+
+            var parentNode = data.parentElement;
+            parentNode.insertBefore(startComment, data);
+            parentNode.appendChild(endComment);
+          }
+
           ko.applyBindings(executionContext, this.element);
         };
 

@@ -249,6 +249,25 @@ var KnockoutBindable = exports.KnockoutBindable = (_dec2 = (0, _aureliaDependenc
 
   return KnockoutBindable;
 }()) || _class2);
+
+
+function getFirstBoundChild(rootNode) {
+  var data = ko.dataFor(rootNode);
+  if (data) {
+    return rootNode;
+  }
+
+  for (var i = 0; i < rootNode.children.length; i++) {
+    var child = rootNode.children[i];
+    var childData = getFirstBoundChild(child);
+    if (childData) {
+      return childData;
+    }
+  }
+
+  return null;
+}
+
 var KnockoutCustomAttribute = exports.KnockoutCustomAttribute = (_dec3 = (0, _aureliaTemplating.customAttribute)('knockout'), _dec4 = (0, _aureliaDependencyInjection.inject)(Element), _dec3(_class4 = _dec4(_class4 = function () {
   function KnockoutCustomAttribute(element) {
     _classCallCheck(this, KnockoutCustomAttribute);
@@ -256,7 +275,27 @@ var KnockoutCustomAttribute = exports.KnockoutCustomAttribute = (_dec3 = (0, _au
     this.element = element;
   }
 
+  KnockoutCustomAttribute.register = function register() {
+    ko.bindingHandlers.stopKoBinding = {
+      init: function init() {
+        return { controlsDescendantBindings: true };
+      }
+    };
+
+    ko.virtualElements.allowedBindings.stopKoBinding = true;
+  };
+
   KnockoutCustomAttribute.prototype.bind = function bind(executionContext) {
+    var data = getFirstBoundChild(this.element);
+    if (data) {
+      var startComment = document.createComment(" ko stopKoBinding: true ");
+      var endComment = document.createComment(" /ko ");
+
+      var parentNode = data.parentElement;
+      parentNode.insertBefore(startComment, data);
+      parentNode.appendChild(endComment);
+    }
+
     ko.applyBindings(executionContext, this.element);
   };
 

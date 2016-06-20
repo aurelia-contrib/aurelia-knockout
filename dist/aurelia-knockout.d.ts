@@ -51,6 +51,7 @@ export declare class KnockoutBindable {
 }
 export declare class KnockoutCustomAttribute {
   constructor(element?: any);
+  static register(): any;
   
   /** internal: do not use */
   bind(executionContext?: any): any;
