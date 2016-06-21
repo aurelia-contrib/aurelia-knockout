@@ -1,13 +1,13 @@
 'use strict';
 
-System.register(['./aurelia-knockout-custom-attribute', './knockout-composition', './knockout-bindable'], function (_export, _context) {
+System.register(['./knockout-custom-attribute', './knockout-composition', './knockout-bindable'], function (_export, _context) {
   "use strict";
 
   var KnockoutCustomAttribute, KnockoutComposition, KnockoutBindable;
 
 
   function configure(frameworkConfig) {
-    frameworkConfig.globalResources('./aurelia-knockout-custom-attribute');
+    frameworkConfig.globalResources('./knockout-custom-attribute');
 
     frameworkConfig.container.get(KnockoutComposition).register();
 
@@ -15,8 +15,8 @@ System.register(['./aurelia-knockout-custom-attribute', './knockout-composition'
   }
 
   return {
-    setters: [function (_aureliaKnockoutCustomAttribute) {
-      KnockoutCustomAttribute = _aureliaKnockoutCustomAttribute.KnockoutCustomAttribute;
+    setters: [function (_knockoutCustomAttribute) {
+      KnockoutCustomAttribute = _knockoutCustomAttribute.KnockoutCustomAttribute;
     }, function (_knockoutComposition) {
       KnockoutComposition = _knockoutComposition.KnockoutComposition;
     }, function (_knockoutBindable) {

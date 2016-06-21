@@ -1,34 +1,20 @@
 import * as ko from 'knockout';
 import {
-  Container,
-  inject
+  ObserverLocator
+} from 'aurelia-binding';
+import {
+  BehaviorPropertyObserver,
+  ViewSlot,
+  CompositionEngine,
+  customAttribute
+} from 'aurelia-templating';
+import {
+  inject,
+  Container
 } from 'aurelia-dependency-injection';
 import {
   Loader
 } from 'aurelia-loader';
-import {
-  ViewSlot,
-  CompositionEngine,
-  BehaviorPropertyObserver,
-  customAttribute
-} from 'aurelia-templating';
-import {
-  ObserverLocator
-} from 'aurelia-binding';
-export declare class KnockoutComposition {
-  constructor(compositionEngine: CompositionEngine, container: Container, loader: Loader);
-  
-  /**
-     * Registers the `compose` Knockout Binding to use Compositions in your Views.
-     */
-  register(): void;
-  
-  /** internal: do not use */
-  buildCompositionSettings(value: any, bindingContext: any): Promise<any>;
-  
-  /** internal: do not use */
-  getViewModelInstance(moduleId: string): Promise<any>;
-}
 export declare class KnockoutBindable {
   observerLocator: ObserverLocator;
   subscriptions: any;
@@ -48,6 +34,20 @@ export declare class KnockoutBindable {
   
   /** internal: do not use */
   getObserver(target?: any, key?: any): any;
+}
+export declare class KnockoutComposition {
+  constructor(compositionEngine: CompositionEngine, container: Container, loader: Loader);
+  
+  /**
+     * Registers the `compose` Knockout Binding to use Compositions in your Views.
+     */
+  register(): void;
+  
+  /** internal: do not use */
+  buildCompositionSettings(value: any, bindingContext: any): Promise<any>;
+  
+  /** internal: do not use */
+  getViewModelInstance(moduleId: string): Promise<any>;
 }
 export declare class KnockoutCustomAttribute {
   constructor(element?: any);

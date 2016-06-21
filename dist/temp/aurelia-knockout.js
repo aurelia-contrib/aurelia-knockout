@@ -3,27 +3,89 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.KnockoutCustomAttribute = exports.KnockoutBindable = exports.KnockoutComposition = undefined;
+exports.KnockoutCustomAttribute = exports.KnockoutComposition = exports.KnockoutBindable = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var _dec, _class, _dec2, _class2, _dec3, _dec4, _class4;
+var _dec, _class, _dec2, _class3, _dec3, _dec4, _class4;
 
 var _knockout = require('knockout');
 
 var ko = _interopRequireWildcard(_knockout);
 
+var _aureliaBinding = require('aurelia-binding');
+
+var _aureliaTemplating = require('aurelia-templating');
+
 var _aureliaDependencyInjection = require('aurelia-dependency-injection');
 
 var _aureliaLoader = require('aurelia-loader');
 
-var _aureliaTemplating = require('aurelia-templating');
-
-var _aureliaBinding = require('aurelia-binding');
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var KnockoutBindable = exports.KnockoutBindable = (_dec = (0, _aureliaDependencyInjection.inject)(_aureliaBinding.ObserverLocator), _dec(_class = function () {
+  function KnockoutBindable(observerLocator) {
+    _classCallCheck(this, KnockoutBindable);
+
+    this.subscriptions = [];
+
+    this.observerLocator = observerLocator;
+  }
+
+  KnockoutBindable.prototype.applyBindableValues = function applyBindableValues(data, target, applyOnlyObservables) {
+    var _this = this;
+
+    data = data || {};
+    target = target || {};
+    applyOnlyObservables = applyOnlyObservables === undefined ? true : applyOnlyObservables;
+
+    var keys = Object.keys(data);
+
+    keys.forEach(function (key) {
+      var outerValue = data[key];
+      var isObservable = ko.isObservable(outerValue);
+
+      if (isObservable || !applyOnlyObservables) {
+        (function () {
+          var observer = _this.getObserver(target, key);
+
+          if (observer && observer instanceof _aureliaTemplating.BehaviorPropertyObserver) {
+            observer.setValue(isObservable ? ko.unwrap(outerValue) : outerValue);
+          }
+
+          if (isObservable) {
+            _this.subscriptions.push(outerValue.subscribe(function (newValue) {
+              observer.setValue(newValue);
+            }));
+          }
+        })();
+      }
+    });
+
+    var originalUnbind = target.unbind;
+
+    target.unbind = function () {
+      _this.subscriptions.forEach(function (subscription) {
+        subscription.dispose();
+      });
+
+      _this.subscriptions = [];
+
+      if (originalUnbind) {
+        originalUnbind.call(target);
+      }
+    };
+  };
+
+  KnockoutBindable.prototype.getObserver = function getObserver(target, key) {
+    return this.observerLocator.getObserver(target, key);
+  };
+
+  return KnockoutBindable;
+}()) || _class);
+
 
 function endsWith(s, suffix) {
   return s.indexOf(suffix, s.length - suffix.length) !== -1;
@@ -52,10 +114,10 @@ function callEvent(element, eventName, args) {
 }
 
 function doComposition(element, unwrappedValue, viewModel) {
-  var _this = this;
+  var _this2 = this;
 
   this.buildCompositionSettings(unwrappedValue, viewModel).then(function (settings) {
-    composeElementInstruction.call(_this, element, settings).then(function () {
+    composeElementInstruction.call(_this2, element, settings).then(function () {
       callEvent(element, 'compositionComplete', [element, element.parentElement]);
     });
   });
@@ -67,7 +129,7 @@ function composeElementInstruction(element, instruction) {
 }
 
 function processInstruction(instruction) {
-  var _this2 = this;
+  var _this3 = this;
 
   instruction.container = instruction.container || this.container;
   instruction.executionContext = instruction.executionContext || this;
@@ -76,8 +138,8 @@ function processInstruction(instruction) {
   instruction.currentBehavior = instruction.currentBehavior || this.currentBehavior;
 
   return this.compositionEngine.compose(instruction).then(function (next) {
-    _this2.currentBehavior = next;
-    _this2.currentViewModel = next ? next.executionContext : null;
+    _this3.currentBehavior = next;
+    _this3.currentViewModel = next ? next.executionContext : null;
   });
 }
 
@@ -85,7 +147,7 @@ function loadModule(moduleId, loader) {
   return loader.loadModule(moduleId);
 }
 
-var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDependencyInjection.inject)(_aureliaTemplating.CompositionEngine, _aureliaDependencyInjection.Container, _aureliaLoader.Loader), _dec(_class = function () {
+var KnockoutComposition = exports.KnockoutComposition = (_dec2 = (0, _aureliaDependencyInjection.inject)(_aureliaTemplating.CompositionEngine, _aureliaDependencyInjection.Container, _aureliaLoader.Loader), _dec2(_class3 = function () {
   function KnockoutComposition(compositionEngine, container, loader) {
     _classCallCheck(this, KnockoutComposition);
 
@@ -95,7 +157,7 @@ var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDepe
   }
 
   KnockoutComposition.prototype.register = function register() {
-    var _this3 = this;
+    var _this4 = this;
 
     window.ko = ko;
 
@@ -111,7 +173,7 @@ var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDepe
           }
         }
 
-        doComposition.call(_this3, element, ko.unwrap(value), viewModel);
+        doComposition.call(_this4, element, ko.unwrap(value), viewModel);
       }
     };
 
@@ -169,7 +231,7 @@ var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDepe
   };
 
   KnockoutComposition.prototype.getViewModelInstance = function getViewModelInstance(moduleId) {
-    var _this4 = this;
+    var _this5 = this;
 
     var index = moduleId.lastIndexOf("/");
     var fileName = moduleId.substr(index === -1 ? 0 : index + 1).toLowerCase();
@@ -185,72 +247,12 @@ var KnockoutComposition = exports.KnockoutComposition = (_dec = (0, _aureliaDepe
         }
       }
 
-      return _this4.container.get(result);
+      return _this5.container.get(result);
     });
   };
 
   return KnockoutComposition;
-}()) || _class);
-var KnockoutBindable = exports.KnockoutBindable = (_dec2 = (0, _aureliaDependencyInjection.inject)(_aureliaBinding.ObserverLocator), _dec2(_class2 = function () {
-  function KnockoutBindable(observerLocator) {
-    _classCallCheck(this, KnockoutBindable);
-
-    this.subscriptions = [];
-
-    this.observerLocator = observerLocator;
-  }
-
-  KnockoutBindable.prototype.applyBindableValues = function applyBindableValues(data, target, applyOnlyObservables) {
-    var _this5 = this;
-
-    data = data || {};
-    target = target || {};
-    applyOnlyObservables = applyOnlyObservables === undefined ? true : applyOnlyObservables;
-
-    var keys = Object.keys(data);
-
-    keys.forEach(function (key) {
-      var outerValue = data[key];
-      var isObservable = ko.isObservable(outerValue);
-
-      if (isObservable || !applyOnlyObservables) {
-        (function () {
-          var observer = _this5.getObserver(target, key);
-
-          if (observer && observer instanceof _aureliaTemplating.BehaviorPropertyObserver) {
-            observer.setValue(isObservable ? ko.unwrap(outerValue) : outerValue);
-          }
-
-          if (isObservable) {
-            _this5.subscriptions.push(outerValue.subscribe(function (newValue) {
-              observer.setValue(newValue);
-            }));
-          }
-        })();
-      }
-    });
-
-    var originalUnbind = target.unbind;
-
-    target.unbind = function () {
-      _this5.subscriptions.forEach(function (subscription) {
-        subscription.dispose();
-      });
-
-      _this5.subscriptions = [];
-
-      if (originalUnbind) {
-        originalUnbind.call(target);
-      }
-    };
-  };
-
-  KnockoutBindable.prototype.getObserver = function getObserver(target, key) {
-    return this.observerLocator.getObserver(target, key);
-  };
-
-  return KnockoutBindable;
-}()) || _class2);
+}()) || _class3);
 
 
 function getFirstBoundChild(rootNode) {
