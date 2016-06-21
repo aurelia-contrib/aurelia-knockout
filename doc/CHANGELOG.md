@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 1.0.1
+
+Released on June 21, 2016.
+
+-   Knockout Binding fails if views are nested recursive. Fixes [#5](https://github.com/code-chris/aurelia-knockout/issues/5)
+
+
 ## Version 1.0.0
 
 Released on June 19, 2016.
