@@ -93,6 +93,8 @@ export class KnockoutComposition {
         doComposition.call(this, element, ko.unwrap(value), viewModel);
       }
     };
+
+    ko.virtualElements.allowedBindings["compose"] = true;
   }
 
   /** internal: do not use */

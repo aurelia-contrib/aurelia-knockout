@@ -115,6 +115,8 @@ System.register(['knockout', 'aurelia-dependency-injection', 'aurelia-loader', '
               doComposition.call(_this3, element, ko.unwrap(value), viewModel);
             }
           };
+
+          ko.virtualElements.allowedBindings["compose"] = true;
         };
 
         KnockoutComposition.prototype.buildCompositionSettings = function buildCompositionSettings(value, bindingContext) {

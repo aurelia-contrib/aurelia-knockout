@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 1.0.2
+
+Released on September 08, 2016.
+
+-   Allow Composition with virtual Knockout binding.
+
+
 ## Version 1.0.1
 
 Released on June 21, 2016.

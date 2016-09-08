@@ -98,6 +98,8 @@ export var KnockoutComposition = (_dec = inject(CompositionEngine, Container, Lo
         doComposition.call(_this3, element, ko.unwrap(value), viewModel);
       }
     };
+
+    ko.virtualElements.allowedBindings["compose"] = true;
   };
 
   KnockoutComposition.prototype.buildCompositionSettings = function buildCompositionSettings(value, bindingContext) {
