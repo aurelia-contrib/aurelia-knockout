@@ -1,67 +1,59 @@
-define(['exports', 'aurelia-dependency-injection', 'aurelia-templating'], function (exports, _aureliaDependencyInjection, _aureliaTemplating) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.KnockoutCustomAttribute = undefined;
-
-  
-
-  var _dec, _dec2, _class;
-
-  function getFirstBoundChild(rootNode) {
-    var data = ko.dataFor(rootNode);
-    if (data) {
-      return rootNode;
-    }
-
-    for (var i = 0; i < rootNode.children.length; i++) {
-      var child = rootNode.children[i];
-      var childData = getFirstBoundChild(child);
-      if (childData) {
-        return childData;
-      }
-    }
-
-    return null;
-  }
-
-  var KnockoutCustomAttribute = exports.KnockoutCustomAttribute = (_dec = (0, _aureliaTemplating.customAttribute)('knockout'), _dec2 = (0, _aureliaDependencyInjection.inject)(Element), _dec(_class = _dec2(_class = function () {
-    function KnockoutCustomAttribute(element) {
-      
-
-      this.element = element;
-    }
-
-    KnockoutCustomAttribute.register = function register() {
-      ko.bindingHandlers.stopKoBinding = {
-        init: function init() {
-          return { controlsDescendantBindings: true };
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+define(["require", "exports", "aurelia-dependency-injection", "aurelia-templating", "knockout"], function (require, exports, aurelia_dependency_injection_1, aurelia_templating_1, ko) {
+    "use strict";
+    function getFirstBoundChild(rootNode) {
+        var data = ko.dataFor(rootNode);
+        if (data) {
+            return rootNode;
         }
-      };
-
-      ko.virtualElements.allowedBindings.stopKoBinding = true;
+        for (var i = 0; i < rootNode.children.length; i++) {
+            var child = rootNode.children[i];
+            var childData = getFirstBoundChild(child);
+            if (childData) {
+                return childData;
+            }
+        }
+        return null;
+    }
+    let KnockoutCustomAttribute = class KnockoutCustomAttribute {
+        constructor(element) {
+            this.element = element;
+        }
+        static register() {
+            ko.bindingHandlers.stopKoBinding = {
+                init: function () {
+                    return { controlsDescendantBindings: true };
+                }
+            };
+            ko.virtualElements.allowedBindings.stopKoBinding = true;
+        }
+        /** internal: do not use */
+        bind(executionContext) {
+            var data = getFirstBoundChild(this.element);
+            if (data) {
+                var startComment = document.createComment(" ko stopKoBinding: true ");
+                var endComment = document.createComment(" /ko ");
+                var parentNode = data.parentElement;
+                if (parentNode) {
+                    parentNode.insertBefore(startComment, data);
+                    parentNode.appendChild(endComment);
+                }
+            }
+            ko.applyBindings(executionContext, this.element);
+        }
+        /** internal: do not use */
+        unbind() {
+            ko.cleanNode(this.element);
+        }
     };
-
-    KnockoutCustomAttribute.prototype.bind = function bind(executionContext) {
-      var data = getFirstBoundChild(this.element);
-      if (data) {
-        var startComment = document.createComment(" ko stopKoBinding: true ");
-        var endComment = document.createComment(" /ko ");
-
-        var parentNode = data.parentElement;
-        parentNode.insertBefore(startComment, data);
-        parentNode.appendChild(endComment);
-      }
-
-      ko.applyBindings(executionContext, this.element);
-    };
-
-    KnockoutCustomAttribute.prototype.unbind = function unbind() {
-      ko.cleanNode(this.element);
-    };
-
-    return KnockoutCustomAttribute;
-  }()) || _class) || _class);
+    KnockoutCustomAttribute = __decorate([
+        aurelia_templating_1.customAttribute('knockout'),
+        aurelia_dependency_injection_1.inject(Element)
+    ], KnockoutCustomAttribute);
+    exports.KnockoutCustomAttribute = KnockoutCustomAttribute;
 });

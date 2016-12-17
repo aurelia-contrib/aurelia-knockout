@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 2.0.0
+
+Released on December 17, 2016.
+
+-   Ported whole codebase to TypeScript.
+-   Dropped Support for JSPM.
+-   Added `require` polyfill function to browsers `window` context.
+
+
 ## Version 1.0.2
 
 Released on September 08, 2016.

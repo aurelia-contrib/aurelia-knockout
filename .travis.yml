@@ -1,42 +1,15 @@
-language: node_js
+language:
+  - "node_js"
+
 node_js:
-  - "stable"
-
-sudo: true
-
-env:
-  global:
-  - secure: "WYFFSj5PlhgVWJFDiOTQWe5gnxkxXdnHvyl13jSA/bR1bhvgc9J+D0vvgdn4RnvmauyqXb1tAU8YZ1+nHj/bGHaWOjwawkNm1Xi//RBHyrJ7/6zBvdyvuG4ED4dedkZEp+QmFuhMYVW8Kxyf3I8h0DhtjthcTBKWx9hVTeRnnU4gB14z+Tn+mKIkpmRaiclIuGj5oITTDyxZ6pC4/BDriS2xwARVt6QyWNDIKrEtRgZpkjGhL+wApi/MdvfBeyEp5+DFfYqLOIbG3+fnnjT9QtLflkfCl1X+5X6/UlH8jAr203JHY+h+7kGSh3qbZSmb/6GRKG0p1P5om9S19hatHH4fJmmmcQPFqqMDefyq62A36vRvryNk5im+RVJcXlHX+wYHpdiShuPLMLT80JdkkFkpBM6mCWoW7Vj1z6i+X0F3rlPnYWTmP5CPmRQLFeNvr8kR/jVEeoPXAMVgvgk871USuKkS9THfCBYbRKqDARwOCts3mr8jIVbzG8pr6nJi5plSsucIVxA0nKgjD2U3JMhQGbx0FJLhdc9pPX1MVBVtdMZL7PbrA20SFXo5k/Uh76OA2Dgepd5Mpwm/fsav/OV/b4G2mjiW4WPEjl5LM17lUON2Ba5xoot03+2qg4R9H44vV/7GhDN8mMr2K3hw9hrSBO15g5Z/6guWmhoWeCQ="
-
-notifications:
-  email: false
-
-cache:
-  directories:
-    - node_modules
-    - jspm_packages
+  - "7.2"
 
 branches:
   only:
     - master
 
-before_install:
-  - npm install -g jspm
-  - jspm config registries.github.auth $JSPM_GITHUB_AUTH_TOKEN
-
 install:
   - npm install
-  - jspm install
-
-before_script:
-  - export CHROME_BIN=/usr/bin/google-chrome
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - sudo apt-get update
-  - sudo apt-get install -y libappindicator1 fonts-liberation
-  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  - sudo dpkg -i google-chrome*.deb
-  - sudo apt-get -f install
 
 script:
   - npm run ci

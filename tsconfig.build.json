@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    ".idea",
+    "dist",
+    "doc",
+    "node_modules",
+    "jspm_packages",
+    "test"
+  ]
+}

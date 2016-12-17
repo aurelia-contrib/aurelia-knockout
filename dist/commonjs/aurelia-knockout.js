@@ -1,24 +1,22 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.configure = exports.KnockoutBindable = exports.KnockoutCustomAttribute = undefined;
-
-var _knockoutCustomAttribute = require('./knockout-custom-attribute');
-
-var _knockoutComposition = require('./knockout-composition');
-
-var _knockoutBindable = require('./knockout-bindable');
-
-function configure(frameworkConfig) {
-  frameworkConfig.globalResources('./knockout-custom-attribute');
-
-  frameworkConfig.container.get(_knockoutComposition.KnockoutComposition).register();
-
-  _knockoutCustomAttribute.KnockoutCustomAttribute.register();
+"use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
-
-exports.KnockoutCustomAttribute = _knockoutCustomAttribute.KnockoutCustomAttribute;
-exports.KnockoutBindable = _knockoutBindable.KnockoutBindable;
+__export(require("./knockout-bindable"));
+__export(require("./knockout-composition"));
+__export(require("./knockout-custom-attribute"));
+__export(require("./require-polyfill"));
+const knockout_custom_attribute_1 = require("./knockout-custom-attribute");
+const knockout_composition_1 = require("./knockout-composition");
+const require_polyfill_1 = require("./require-polyfill");
+function configure(frameworkConfig) {
+    // register custom attribute
+    frameworkConfig.globalResources('./knockout-custom-attribute');
+    // register knockout custom binding for composition logic
+    frameworkConfig.container.get(knockout_composition_1.KnockoutComposition).register();
+    // register require function in window object if not available
+    frameworkConfig.container.get(require_polyfill_1.RequirePolyfill).register();
+    // register stopKoBindings custom binding
+    knockout_custom_attribute_1.KnockoutCustomAttribute.register();
+}
 exports.configure = configure;
