@@ -1,9 +1,8 @@
 # Aurelia Knockout Plugin
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/code-chris/aurelia-knockout.svg)](https://greenkeeper.io/)
-
-[![Build Status](https://travis-ci.org/code-chris/aurelia-knockout.svg?branch=master)](https://travis-ci.org/code-chris/aurelia-knockout)
 [![npm Version](https://img.shields.io/npm/v/aurelia-knockout.svg)](https://www.npmjs.com/package/aurelia-knockout)
+[![Build Status](https://travis-ci.org/code-chris/aurelia-knockout.svg?branch=master)](https://travis-ci.org/code-chris/aurelia-knockout)
+[![Greenkeeper badge](https://badges.greenkeeper.io/code-chris/aurelia-knockout.svg)](https://greenkeeper.io/)
 
 
 ## Dependencies
