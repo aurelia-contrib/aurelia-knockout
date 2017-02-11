@@ -2,17 +2,14 @@ language:
   - "node_js"
 
 node_js:
-  - "7.2"
+  - "7.5"
 
 branches:
   only:
     - master
     - /^greenkeeper/.*$/
 
-install:
-  - npm install
-  - npm install typings -g
-  - typings install
-
 script:
+  - yarn global add typings
+  - typings install
   - npm run ci
