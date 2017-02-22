@@ -3,7 +3,8 @@
   "compilerOptions": {
     "noUnusedParameters": false,
     "target": "es6",
-    "module": "commonjs"
+    "module": "commonjs",
+    "skipLibCheck": true
   },
   "exclude": [
     ".idea",
