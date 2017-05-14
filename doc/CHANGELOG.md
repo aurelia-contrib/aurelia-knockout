@@ -2,7 +2,7 @@
 
 ## Version 2.0.1
 
-Released on January 21, 2016.
+Released on January 21, 2017.
 
 -   Use `PLATFORM.moduleName(...)` to include resource.
 
