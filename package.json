@@ -29,8 +29,8 @@
     "aurelia-tools": "github:aurelia/tools#cli",
     "gulp": "^3.9.1",
     "gulp-jasmine": "^2.4.2",
-    "typedoc": "^0.5.5",
-    "typescript": "~2.2.1"
+    "typedoc": "^0.7.0",
+    "typescript": "~2.3.1"
   },
   "dependencies": {
     "aurelia-binding": "^1.0.0",

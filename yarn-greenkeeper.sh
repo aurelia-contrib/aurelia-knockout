@@ -25,5 +25,5 @@ git config --global user.name "Christian Kotzbauer"
 git config --global push.default simple
 
 git add yarn.lock
-git commit -m "chore: update yarn.lock"
+git commit -m "$(git log -1 --pretty=%B)"
 git push
