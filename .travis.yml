@@ -9,11 +9,21 @@ branches:
     - master
     - /^greenkeeper/.*$/
 
+before_install:
+  - npm i -g npm5
+  - npm5 i -g greenkeeper-lockfile
+
+install: npm5 install
+
+before_script: greenkeeper-lockfile-update
+
 script:
-  - yarn global add typings
+  - npm5 i -g global typings
   - typings install
-  - npm run ci
-  
+  - npm5 run ci
+
+after_script: greenkeeper-lockfile-upload
+
 after_success:
   - bash ./yarn-greenkeeper.sh
   
