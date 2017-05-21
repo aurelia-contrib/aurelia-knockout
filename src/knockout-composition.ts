@@ -108,8 +108,8 @@ export class KnockoutComposition {
   buildCompositionSettings(value: any, bindingContext: any): Promise<any> {
     let view: string|null = null;
     let moduleId: string|null = null;
-    let viewModel: any;
-    let activationData: any;
+    let viewModel: any|null = null;
+    let activationData: any|null = null;
 
     // See http://durandaljs.com/documentation/Using-Composition.html
 
