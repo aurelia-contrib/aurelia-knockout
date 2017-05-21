@@ -2,24 +2,20 @@ language:
   - "node_js"
 
 node_js:
-  - "node"
+  - "7.5"
 
 branches:
   only:
     - master
     - /^greenkeeper/.*$/
 
-before_script:
-  - npm i npm5
-  - npm5 i
-  - npm5 i -g typings
-  - typings install
-
 script:
+  - yarn global add typings
+  - typings install
   - npm run ci
   
 after_success:
-  #- bash ./yarn-greenkeeper.sh
+  - bash ./yarn-greenkeeper.sh
   
 env:
   global:
