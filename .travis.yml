@@ -24,13 +24,6 @@ script:
 
 after_script: greenkeeper-lockfile-upload
 
-after_success:
-  - bash ./yarn-greenkeeper.sh
-  
-env:
-  global:
-    - secure: "bBVUmybB4AxxT0RoiN7LpN3wePqQptdS4lqzYuVW0xwkjMA/nFkErWS69Ni3ACgdfwJsAhCPGqepEOIW7JCIQoC8ICOla9RFbm+WluH7X20ecacs50y722A/OKwmBfrsHuN6IEfG+k2Ge9PKybdEZPAXllEL/9aEOI/El+g55e3zvbYiSGEqM+PP6ciLu2O9wvxyzfHDxmvpBOcub5ryt3jQ1gDJQ5rR9N6LDHfAySRG4bglfVdZbY1voWfv8qjlUzM1ujUEpdYi0LB9tOkHNOq0+aZGCSHoU9RPVBR9JhdwkAqLsz4/Ks/hIrAbNAtVyWAOOUTLo+vicRkCCbBhLth5AWs8gxGZL3YEGF2creob3f7q9WXzZjE2p9oHbbgV03oi7Ql1nDeSBbfPdk+qhTnA8KdC5I4KNn8+ruyymmZczho8vhI9fSpl++qrfxj7v9YqdZcDi50meg2M8yp8VbehOj6IMpI7O+P1Mgkxb0sn4eIffxtkk0w6uxRbbJnb6nzpHKemQeX3nPevthUZl4UVXPlm70Rt86afzDp/sNcRLztKXibbq24XU5Pe9LZo2Q/cuwyRrLQW+NOL8BYWj3sy615xcnNlVaGTupOYjaQxRFndpi4JZvDVKAnywJw/cnP2XMw7c+5f1aje7hOQDFg0bLvoQuc72X5sv+b5ZSY="
-
 notifications:
   slack:
     on_success: change
