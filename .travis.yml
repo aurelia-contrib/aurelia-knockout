@@ -10,19 +10,18 @@ branches:
     - /^greenkeeper/.*$/
 
 before_install:
-  - npm i -g npm5
-  - npm5 i -g greenkeeper-lockfile
+  - npm i -g greenkeeper-lockfile
 
-install: npm5 install
-
-before_script: greenkeeper-lockfile-update
+before_script:
+  - greenkeeper-lockfile-update
 
 script:
-  - npm5 i -g global typings
+  - npm i -g global typings
   - typings install
-  - npm5 run ci
+  - npm run ci
 
-after_script: greenkeeper-lockfile-upload
+after_script:
+  - greenkeeper-lockfile-upload
 
 notifications:
   slack:
