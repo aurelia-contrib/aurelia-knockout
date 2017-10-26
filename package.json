@@ -13,7 +13,7 @@
     "knockout"
   ],
   "scripts": {
-    "test": "tsc --project tsconfig.json --outDir dist/test && gulp test",
+    "test": "tsc --project tsconfig.json --target es6 --module commonjs --outDir dist/test && gulp test",
     "ci": "npm run build && npm run test",
     "build": "aurelia-tools ts-build-all --continue-when-failed --clean-before"
   },
