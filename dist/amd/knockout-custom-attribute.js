@@ -6,6 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 define(["require", "exports", "aurelia-dependency-injection", "aurelia-templating", "knockout"], function (require, exports, aurelia_dependency_injection_1, aurelia_templating_1, ko) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function getFirstBoundChild(rootNode) {
         var data = ko.dataFor(rootNode);
         if (data) {
@@ -20,20 +21,20 @@ define(["require", "exports", "aurelia-dependency-injection", "aurelia-templatin
         }
         return null;
     }
-    let KnockoutCustomAttribute = class KnockoutCustomAttribute {
-        constructor(element) {
+    var KnockoutCustomAttribute = (function () {
+        function KnockoutCustomAttribute(element) {
             this.element = element;
         }
-        static register() {
+        KnockoutCustomAttribute.register = function () {
             ko.bindingHandlers.stopKoBinding = {
                 init: function () {
                     return { controlsDescendantBindings: true };
                 }
             };
             ko.virtualElements.allowedBindings.stopKoBinding = true;
-        }
+        };
         /** internal: do not use */
-        bind(executionContext) {
+        KnockoutCustomAttribute.prototype.bind = function (executionContext) {
             var data = getFirstBoundChild(this.element);
             if (data) {
                 var startComment = document.createComment(" ko stopKoBinding: true ");
@@ -45,12 +46,13 @@ define(["require", "exports", "aurelia-dependency-injection", "aurelia-templatin
                 }
             }
             ko.applyBindings(executionContext, this.element);
-        }
+        };
         /** internal: do not use */
-        unbind() {
+        KnockoutCustomAttribute.prototype.unbind = function () {
             ko.cleanNode(this.element);
-        }
-    };
+        };
+        return KnockoutCustomAttribute;
+    }());
     KnockoutCustomAttribute = __decorate([
         aurelia_templating_1.customAttribute('knockout'),
         aurelia_dependency_injection_1.inject(Element)

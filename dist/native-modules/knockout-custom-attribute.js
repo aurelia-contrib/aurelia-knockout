@@ -21,20 +21,20 @@ function getFirstBoundChild(rootNode) {
     }
     return null;
 }
-let KnockoutCustomAttribute = class KnockoutCustomAttribute {
-    constructor(element) {
+var KnockoutCustomAttribute = (function () {
+    function KnockoutCustomAttribute(element) {
         this.element = element;
     }
-    static register() {
+    KnockoutCustomAttribute.register = function () {
         ko.bindingHandlers.stopKoBinding = {
             init: function () {
                 return { controlsDescendantBindings: true };
             }
         };
         ko.virtualElements.allowedBindings.stopKoBinding = true;
-    }
+    };
     /** internal: do not use */
-    bind(executionContext) {
+    KnockoutCustomAttribute.prototype.bind = function (executionContext) {
         var data = getFirstBoundChild(this.element);
         if (data) {
             var startComment = document.createComment(" ko stopKoBinding: true ");
@@ -46,12 +46,13 @@ let KnockoutCustomAttribute = class KnockoutCustomAttribute {
             }
         }
         ko.applyBindings(executionContext, this.element);
-    }
+    };
     /** internal: do not use */
-    unbind() {
+    KnockoutCustomAttribute.prototype.unbind = function () {
         ko.cleanNode(this.element);
-    }
-};
+    };
+    return KnockoutCustomAttribute;
+}());
 KnockoutCustomAttribute = __decorate([
     customAttribute('knockout'),
     inject(Element)

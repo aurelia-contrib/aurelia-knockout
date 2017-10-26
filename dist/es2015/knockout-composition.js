@@ -86,8 +86,8 @@ let KnockoutComposition = class KnockoutComposition {
     buildCompositionSettings(value, bindingContext) {
         let view = null;
         let moduleId = null;
-        let viewModel;
-        let activationData;
+        let viewModel = null;
+        let activationData = null;
         // See http://durandaljs.com/documentation/Using-Composition.html
         if (typeof value === 'string') {
             if (endsWith(value, '.html')) {

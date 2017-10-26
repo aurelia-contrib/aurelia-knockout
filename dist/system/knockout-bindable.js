@@ -24,8 +24,8 @@ System.register(["aurelia-binding", "aurelia-templating", "aurelia-dependency-in
             }
         ],
         execute: function () {
-            KnockoutBindable = class KnockoutBindable {
-                constructor(observerLocator) {
+            KnockoutBindable = (function () {
+                function KnockoutBindable(observerLocator) {
                     this.subscriptions = [];
                     this.observerLocator = observerLocator;
                 }
@@ -39,42 +39,44 @@ System.register(["aurelia-binding", "aurelia-templating", "aurelia-dependency-in
                  * @param target - the target view model
                  * @param applyOnlyObservables - `true` if only observable values should be applied, false by default.
                  */
-                applyBindableValues(data, target, applyOnlyObservables) {
+                KnockoutBindable.prototype.applyBindableValues = function (data, target, applyOnlyObservables) {
+                    var _this = this;
                     data = data || {};
                     target = target || {};
                     applyOnlyObservables = applyOnlyObservables === undefined ? true : applyOnlyObservables;
-                    let keys = Object.keys(data);
-                    keys.forEach((key) => {
-                        let outerValue = data[key];
-                        let isObservable = ko.isObservable(outerValue);
+                    var keys = Object.keys(data);
+                    keys.forEach(function (key) {
+                        var outerValue = data[key];
+                        var isObservable = ko.isObservable(outerValue);
                         if (isObservable || !applyOnlyObservables) {
-                            let observer = this.getObserver(target, key);
-                            if (observer && observer instanceof aurelia_templating_1.BehaviorPropertyObserver) {
-                                observer.setValue(isObservable ? ko.unwrap(outerValue) : outerValue);
+                            var observer_1 = _this.getObserver(target, key);
+                            if (observer_1 && observer_1 instanceof aurelia_templating_1.BehaviorPropertyObserver) {
+                                observer_1.setValue(isObservable ? ko.unwrap(outerValue) : outerValue);
                             }
                             if (isObservable) {
-                                this.subscriptions.push(outerValue.subscribe((newValue) => {
-                                    observer.setValue(newValue);
+                                _this.subscriptions.push(outerValue.subscribe(function (newValue) {
+                                    observer_1.setValue(newValue);
                                 }));
                             }
                         }
                     });
-                    let originalUnbind = target.unbind;
-                    target.unbind = () => {
-                        this.subscriptions.forEach((subscription) => {
+                    var originalUnbind = target.unbind;
+                    target.unbind = function () {
+                        _this.subscriptions.forEach(function (subscription) {
                             subscription.dispose();
                         });
-                        this.subscriptions = [];
+                        _this.subscriptions = [];
                         if (originalUnbind) {
                             originalUnbind.call(target);
                         }
                     };
-                }
+                };
                 /** internal: do not use */
-                getObserver(target, key) {
+                KnockoutBindable.prototype.getObserver = function (target, key) {
                     return this.observerLocator.getObserver(target, key);
-                }
-            };
+                };
+                return KnockoutBindable;
+            }());
             KnockoutBindable = __decorate([
                 aurelia_dependency_injection_1.inject(aurelia_binding_1.ObserverLocator)
             ], KnockoutBindable);

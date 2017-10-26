@@ -11,9 +11,9 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
         return s.indexOf(suffix, s.length - suffix.length) !== -1;
     }
     function getMatchingProperty(result, propName) {
-        let properties = Object.keys(result);
-        for (let index = 0; index < properties.length; index++) {
-            let prop = properties[index].toLowerCase();
+        var properties = Object.keys(result);
+        for (var index = 0; index < properties.length; index++) {
+            var prop = properties[index].toLowerCase();
             if (prop.indexOf(propName) !== -1) {
                 return properties[index];
             }
@@ -21,15 +21,16 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
         return null;
     }
     function callEvent(element, eventName, args) {
-        let viewModel = ko.dataFor(element.children[0]);
-        let func = viewModel[eventName];
+        var viewModel = ko.dataFor(element.children[0]);
+        var func = viewModel[eventName];
         if (func && typeof func === 'function') {
             func.apply(viewModel, args);
         }
     }
     function doComposition(element, unwrappedValue, viewModel) {
-        this.buildCompositionSettings(unwrappedValue, viewModel).then((settings) => {
-            composeElementInstruction.call(this, element, settings).then(() => {
+        var _this = this;
+        this.buildCompositionSettings(unwrappedValue, viewModel).then(function (settings) {
+            composeElementInstruction.call(_this, element, settings).then(function () {
                 callEvent(element, 'compositionComplete', [element, element.parentElement]);
             });
         });
@@ -39,14 +40,15 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
         return processInstruction.call(this, instruction);
     }
     function processInstruction(instruction) {
+        var _this = this;
         instruction.container = instruction.container || this.container;
         instruction.executionContext = instruction.executionContext || this;
         instruction.viewSlot = instruction.viewSlot || this.viewSlot;
         instruction.viewResources = instruction.viewResources || this.viewResources;
         instruction.currentBehavior = instruction.currentBehavior || this.currentBehavior;
-        return this.compositionEngine.compose(instruction).then((next) => {
-            this.currentBehavior = next;
-            this.currentViewModel = next ? next.executionContext : null;
+        return this.compositionEngine.compose(instruction).then(function (next) {
+            _this.currentBehavior = next;
+            _this.currentViewModel = next ? next.executionContext : null;
         });
     }
     function loadModule(moduleId, loader) {
@@ -69,8 +71,8 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
             }
         ],
         execute: function () {
-            KnockoutComposition = class KnockoutComposition {
-                constructor(compositionEngine, container, loader) {
+            KnockoutComposition = (function () {
+                function KnockoutComposition(compositionEngine, container, loader) {
                     this.compositionEngine = compositionEngine;
                     this.container = container;
                     this.loader = loader;
@@ -78,14 +80,15 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
                 /**
                  * Registers the `compose` Knockout Binding to use Compositions in your Views.
                  */
-                register() {
+                KnockoutComposition.prototype.register = function () {
+                    var _this = this;
                     // a bit hacky, I know ;)
                     if (typeof window !== "undefined") {
                         window.ko = ko;
                     }
                     ko.bindingHandlers.compose = {
-                        update: (element, valueAccessor, allBindings, viewModel) => {
-                            let value = valueAccessor();
+                        update: function (element, valueAccessor, allBindings, viewModel) {
+                            var value = valueAccessor();
                             if (element.childElementCount > 0) {
                                 // Remove previous composed view
                                 callEvent(element, 'detached', [element, element.parentElement]);
@@ -93,17 +96,17 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
                                     element.removeChild(element.firstChild);
                                 }
                             }
-                            doComposition.call(this, element, ko.unwrap(value), viewModel);
+                            doComposition.call(_this, element, ko.unwrap(value), viewModel);
                         }
                     };
                     ko.virtualElements.allowedBindings["compose"] = true;
-                }
+                };
                 /** internal: do not use */
-                buildCompositionSettings(value, bindingContext) {
-                    let view = null;
-                    let moduleId = null;
-                    let viewModel;
-                    let activationData;
+                KnockoutComposition.prototype.buildCompositionSettings = function (value, bindingContext) {
+                    var view = null;
+                    var moduleId = null;
+                    var viewModel = null;
+                    var activationData = null;
                     // See http://durandaljs.com/documentation/Using-Composition.html
                     if (typeof value === 'string') {
                         if (endsWith(value, '.html')) {
@@ -148,23 +151,24 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
                         // Call the constructor
                         viewModel = value();
                     }
-                    let settings = { view: view, viewModel: viewModel, model: activationData };
+                    var settings = { view: view, viewModel: viewModel, model: activationData };
                     if (!viewModel && moduleId) {
-                        return this.getViewModelInstance(moduleId).then((modelInstance) => {
+                        return this.getViewModelInstance(moduleId).then(function (modelInstance) {
                             settings.viewModel = modelInstance;
                             return Promise.resolve(settings);
                         });
                     }
                     return Promise.resolve(settings);
-                }
+                };
                 /** internal: do not use */
-                getViewModelInstance(moduleId) {
-                    let index = moduleId.lastIndexOf("/");
-                    let fileName = moduleId.substr(index === -1 ? 0 : index + 1).toLowerCase();
-                    return loadModule(moduleId, this.loader).then((result) => {
+                KnockoutComposition.prototype.getViewModelInstance = function (moduleId) {
+                    var _this = this;
+                    var index = moduleId.lastIndexOf("/");
+                    var fileName = moduleId.substr(index === -1 ? 0 : index + 1).toLowerCase();
+                    return loadModule(moduleId, this.loader).then(function (result) {
                         if (typeof result !== 'function') {
                             // Try to find a property which name matches the filename of the module
-                            let constructorPropName = getMatchingProperty(result, fileName);
+                            var constructorPropName = getMatchingProperty(result, fileName);
                             if (constructorPropName) {
                                 // Use function of property.
                                 // This occurs if the constructor function is exported by the module.
@@ -175,10 +179,11 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
                                 return result;
                             }
                         }
-                        return this.container.get(result);
+                        return _this.container.get(result);
                     });
-                }
-            };
+                };
+                return KnockoutComposition;
+            }());
             KnockoutComposition = __decorate([
                 aurelia_dependency_injection_1.inject(aurelia_templating_1.CompositionEngine, aurelia_dependency_injection_1.Container, aurelia_loader_1.Loader)
             ], KnockoutComposition);

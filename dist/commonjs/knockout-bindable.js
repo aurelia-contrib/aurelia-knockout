@@ -5,12 +5,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-const aurelia_binding_1 = require("aurelia-binding");
-const aurelia_templating_1 = require("aurelia-templating");
-const aurelia_dependency_injection_1 = require("aurelia-dependency-injection");
-const ko = require("knockout");
-let KnockoutBindable = class KnockoutBindable {
-    constructor(observerLocator) {
+Object.defineProperty(exports, "__esModule", { value: true });
+var aurelia_binding_1 = require("aurelia-binding");
+var aurelia_templating_1 = require("aurelia-templating");
+var aurelia_dependency_injection_1 = require("aurelia-dependency-injection");
+var ko = require("knockout");
+var KnockoutBindable = (function () {
+    function KnockoutBindable(observerLocator) {
         this.subscriptions = [];
         this.observerLocator = observerLocator;
     }
@@ -24,42 +25,44 @@ let KnockoutBindable = class KnockoutBindable {
      * @param target - the target view model
      * @param applyOnlyObservables - `true` if only observable values should be applied, false by default.
      */
-    applyBindableValues(data, target, applyOnlyObservables) {
+    KnockoutBindable.prototype.applyBindableValues = function (data, target, applyOnlyObservables) {
+        var _this = this;
         data = data || {};
         target = target || {};
         applyOnlyObservables = applyOnlyObservables === undefined ? true : applyOnlyObservables;
-        let keys = Object.keys(data);
-        keys.forEach((key) => {
-            let outerValue = data[key];
-            let isObservable = ko.isObservable(outerValue);
+        var keys = Object.keys(data);
+        keys.forEach(function (key) {
+            var outerValue = data[key];
+            var isObservable = ko.isObservable(outerValue);
             if (isObservable || !applyOnlyObservables) {
-                let observer = this.getObserver(target, key);
-                if (observer && observer instanceof aurelia_templating_1.BehaviorPropertyObserver) {
-                    observer.setValue(isObservable ? ko.unwrap(outerValue) : outerValue);
+                var observer_1 = _this.getObserver(target, key);
+                if (observer_1 && observer_1 instanceof aurelia_templating_1.BehaviorPropertyObserver) {
+                    observer_1.setValue(isObservable ? ko.unwrap(outerValue) : outerValue);
                 }
                 if (isObservable) {
-                    this.subscriptions.push(outerValue.subscribe((newValue) => {
-                        observer.setValue(newValue);
+                    _this.subscriptions.push(outerValue.subscribe(function (newValue) {
+                        observer_1.setValue(newValue);
                     }));
                 }
             }
         });
-        let originalUnbind = target.unbind;
-        target.unbind = () => {
-            this.subscriptions.forEach((subscription) => {
+        var originalUnbind = target.unbind;
+        target.unbind = function () {
+            _this.subscriptions.forEach(function (subscription) {
                 subscription.dispose();
             });
-            this.subscriptions = [];
+            _this.subscriptions = [];
             if (originalUnbind) {
                 originalUnbind.call(target);
             }
         };
-    }
+    };
     /** internal: do not use */
-    getObserver(target, key) {
+    KnockoutBindable.prototype.getObserver = function (target, key) {
         return this.observerLocator.getObserver(target, key);
-    }
-};
+    };
+    return KnockoutBindable;
+}());
 KnockoutBindable = __decorate([
     aurelia_dependency_injection_1.inject(aurelia_binding_1.ObserverLocator)
 ], KnockoutBindable);

@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 2.0.2
+
+Released on October 26, 2017.
+
+-   Fixed wrong transpilations in `dist` folder [#20](https://github.com/code-chris/aurelia-knockout/issues/20)
+
+
 ## Version 2.0.1
 
 Released on January 21, 2017.
