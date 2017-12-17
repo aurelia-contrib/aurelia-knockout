@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Loader } from 'aurelia-loader';
 import { inject } from 'aurelia-dependency-injection';
-var RequirePolyfill = (function () {
+var RequirePolyfill = /** @class */ (function () {
     function RequirePolyfill(loader) {
         this.loader = loader;
     }
@@ -43,9 +43,9 @@ var RequirePolyfill = (function () {
             };
         }
     };
+    RequirePolyfill = __decorate([
+        inject(Loader)
+    ], RequirePolyfill);
     return RequirePolyfill;
 }());
-RequirePolyfill = __decorate([
-    inject(Loader)
-], RequirePolyfill);
 export { RequirePolyfill };

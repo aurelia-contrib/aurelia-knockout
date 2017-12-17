@@ -71,7 +71,7 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
             }
         ],
         execute: function () {
-            KnockoutComposition = (function () {
+            KnockoutComposition = /** @class */ (function () {
                 function KnockoutComposition(compositionEngine, container, loader) {
                     this.compositionEngine = compositionEngine;
                     this.container = container;
@@ -179,14 +179,15 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
                                 return result;
                             }
                         }
+                        _this.container.registerTransient(result);
                         return _this.container.get(result);
                     });
                 };
+                KnockoutComposition = __decorate([
+                    aurelia_dependency_injection_1.inject(aurelia_templating_1.CompositionEngine, aurelia_dependency_injection_1.Container, aurelia_loader_1.Loader)
+                ], KnockoutComposition);
                 return KnockoutComposition;
             }());
-            KnockoutComposition = __decorate([
-                aurelia_dependency_injection_1.inject(aurelia_templating_1.CompositionEngine, aurelia_dependency_injection_1.Container, aurelia_loader_1.Loader)
-            ], KnockoutComposition);
             exports_1("KnockoutComposition", KnockoutComposition);
         }
     };

@@ -159,6 +159,7 @@ let KnockoutComposition = class KnockoutComposition {
                     return result;
                 }
             }
+            this.container.registerTransient(result);
             return this.container.get(result);
         });
     }

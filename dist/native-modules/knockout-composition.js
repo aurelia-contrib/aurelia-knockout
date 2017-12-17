@@ -55,7 +55,7 @@ function processInstruction(instruction) {
 function loadModule(moduleId, loader) {
     return loader.loadModule(moduleId);
 }
-var KnockoutComposition = (function () {
+var KnockoutComposition = /** @class */ (function () {
     function KnockoutComposition(compositionEngine, container, loader) {
         this.compositionEngine = compositionEngine;
         this.container = container;
@@ -163,12 +163,13 @@ var KnockoutComposition = (function () {
                     return result;
                 }
             }
+            _this.container.registerTransient(result);
             return _this.container.get(result);
         });
     };
+    KnockoutComposition = __decorate([
+        inject(CompositionEngine, Container, Loader)
+    ], KnockoutComposition);
     return KnockoutComposition;
 }());
-KnockoutComposition = __decorate([
-    inject(CompositionEngine, Container, Loader)
-], KnockoutComposition);
 export { KnockoutComposition };

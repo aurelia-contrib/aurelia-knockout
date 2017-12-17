@@ -185,6 +185,7 @@ export class KnockoutComposition {
         }
       }
 
+      this.container.registerTransient(result);
       return this.container.get(result);
     });
   }

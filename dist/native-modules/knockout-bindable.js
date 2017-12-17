@@ -8,7 +8,7 @@ import { ObserverLocator } from 'aurelia-binding';
 import { BehaviorPropertyObserver } from 'aurelia-templating';
 import { inject } from 'aurelia-dependency-injection';
 import * as ko from 'knockout';
-var KnockoutBindable = (function () {
+var KnockoutBindable = /** @class */ (function () {
     function KnockoutBindable(observerLocator) {
         this.subscriptions = [];
         this.observerLocator = observerLocator;
@@ -59,9 +59,9 @@ var KnockoutBindable = (function () {
     KnockoutBindable.prototype.getObserver = function (target, key) {
         return this.observerLocator.getObserver(target, key);
     };
+    KnockoutBindable = __decorate([
+        inject(ObserverLocator)
+    ], KnockoutBindable);
     return KnockoutBindable;
 }());
-KnockoutBindable = __decorate([
-    inject(ObserverLocator)
-], KnockoutBindable);
 export { KnockoutBindable };

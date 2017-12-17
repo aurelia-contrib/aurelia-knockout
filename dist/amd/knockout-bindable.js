@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 define(["require", "exports", "aurelia-binding", "aurelia-templating", "aurelia-dependency-injection", "knockout"], function (require, exports, aurelia_binding_1, aurelia_templating_1, aurelia_dependency_injection_1, ko) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var KnockoutBindable = (function () {
+    var KnockoutBindable = /** @class */ (function () {
         function KnockoutBindable(observerLocator) {
             this.subscriptions = [];
             this.observerLocator = observerLocator;
@@ -58,10 +58,10 @@ define(["require", "exports", "aurelia-binding", "aurelia-templating", "aurelia-
         KnockoutBindable.prototype.getObserver = function (target, key) {
             return this.observerLocator.getObserver(target, key);
         };
+        KnockoutBindable = __decorate([
+            aurelia_dependency_injection_1.inject(aurelia_binding_1.ObserverLocator)
+        ], KnockoutBindable);
         return KnockoutBindable;
     }());
-    KnockoutBindable = __decorate([
-        aurelia_dependency_injection_1.inject(aurelia_binding_1.ObserverLocator)
-    ], KnockoutBindable);
     exports.KnockoutBindable = KnockoutBindable;
 });

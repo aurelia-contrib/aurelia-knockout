@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 2.1.0
+
+Released on December 17, 2017.
+
+-   Use "transient" lifetime for composed view-models. [#22](https://github.com/code-chris/aurelia-knockout/issues/22)
+
+
 ## Version 2.0.2
 
 Released on October 26, 2017.

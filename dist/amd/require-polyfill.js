@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 define(["require", "exports", "aurelia-loader", "aurelia-dependency-injection"], function (require, exports, aurelia_loader_1, aurelia_dependency_injection_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var RequirePolyfill = (function () {
+    var RequirePolyfill = /** @class */ (function () {
         function RequirePolyfill(loader) {
             this.loader = loader;
         }
@@ -44,10 +44,10 @@ define(["require", "exports", "aurelia-loader", "aurelia-dependency-injection"],
                 };
             }
         };
+        RequirePolyfill = __decorate([
+            aurelia_dependency_injection_1.inject(aurelia_loader_1.Loader)
+        ], RequirePolyfill);
         return RequirePolyfill;
     }());
-    RequirePolyfill = __decorate([
-        aurelia_dependency_injection_1.inject(aurelia_loader_1.Loader)
-    ], RequirePolyfill);
     exports.RequirePolyfill = RequirePolyfill;
 });

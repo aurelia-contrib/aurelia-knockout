@@ -10,7 +10,7 @@ var aurelia_binding_1 = require("aurelia-binding");
 var aurelia_templating_1 = require("aurelia-templating");
 var aurelia_dependency_injection_1 = require("aurelia-dependency-injection");
 var ko = require("knockout");
-var KnockoutBindable = (function () {
+var KnockoutBindable = /** @class */ (function () {
     function KnockoutBindable(observerLocator) {
         this.subscriptions = [];
         this.observerLocator = observerLocator;
@@ -61,9 +61,9 @@ var KnockoutBindable = (function () {
     KnockoutBindable.prototype.getObserver = function (target, key) {
         return this.observerLocator.getObserver(target, key);
     };
+    KnockoutBindable = __decorate([
+        aurelia_dependency_injection_1.inject(aurelia_binding_1.ObserverLocator)
+    ], KnockoutBindable);
     return KnockoutBindable;
 }());
-KnockoutBindable = __decorate([
-    aurelia_dependency_injection_1.inject(aurelia_binding_1.ObserverLocator)
-], KnockoutBindable);
 exports.KnockoutBindable = KnockoutBindable;

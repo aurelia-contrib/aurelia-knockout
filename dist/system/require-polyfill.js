@@ -18,7 +18,7 @@ System.register(["aurelia-loader", "aurelia-dependency-injection"], function (ex
             }
         ],
         execute: function () {
-            RequirePolyfill = (function () {
+            RequirePolyfill = /** @class */ (function () {
                 function RequirePolyfill(loader) {
                     this.loader = loader;
                 }
@@ -55,11 +55,11 @@ System.register(["aurelia-loader", "aurelia-dependency-injection"], function (ex
                         };
                     }
                 };
+                RequirePolyfill = __decorate([
+                    aurelia_dependency_injection_1.inject(aurelia_loader_1.Loader)
+                ], RequirePolyfill);
                 return RequirePolyfill;
             }());
-            RequirePolyfill = __decorate([
-                aurelia_dependency_injection_1.inject(aurelia_loader_1.Loader)
-            ], RequirePolyfill);
             exports_1("RequirePolyfill", RequirePolyfill);
         }
     };

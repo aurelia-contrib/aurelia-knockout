@@ -21,7 +21,7 @@ function getFirstBoundChild(rootNode) {
     }
     return null;
 }
-var KnockoutCustomAttribute = (function () {
+var KnockoutCustomAttribute = /** @class */ (function () {
     function KnockoutCustomAttribute(element) {
         this.element = element;
     }
@@ -51,10 +51,10 @@ var KnockoutCustomAttribute = (function () {
     KnockoutCustomAttribute.prototype.unbind = function () {
         ko.cleanNode(this.element);
     };
+    KnockoutCustomAttribute = __decorate([
+        customAttribute('knockout'),
+        inject(Element)
+    ], KnockoutCustomAttribute);
     return KnockoutCustomAttribute;
 }());
-KnockoutCustomAttribute = __decorate([
-    customAttribute('knockout'),
-    inject(Element)
-], KnockoutCustomAttribute);
 export { KnockoutCustomAttribute };

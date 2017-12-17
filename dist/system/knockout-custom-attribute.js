@@ -35,7 +35,7 @@ System.register(["aurelia-dependency-injection", "aurelia-templating", "knockout
             }
         ],
         execute: function () {
-            KnockoutCustomAttribute = (function () {
+            KnockoutCustomAttribute = /** @class */ (function () {
                 function KnockoutCustomAttribute(element) {
                     this.element = element;
                 }
@@ -65,12 +65,12 @@ System.register(["aurelia-dependency-injection", "aurelia-templating", "knockout
                 KnockoutCustomAttribute.prototype.unbind = function () {
                     ko.cleanNode(this.element);
                 };
+                KnockoutCustomAttribute = __decorate([
+                    aurelia_templating_1.customAttribute('knockout'),
+                    aurelia_dependency_injection_1.inject(Element)
+                ], KnockoutCustomAttribute);
                 return KnockoutCustomAttribute;
             }());
-            KnockoutCustomAttribute = __decorate([
-                aurelia_templating_1.customAttribute('knockout'),
-                aurelia_dependency_injection_1.inject(Element)
-            ], KnockoutCustomAttribute);
             exports_1("KnockoutCustomAttribute", KnockoutCustomAttribute);
         }
     };

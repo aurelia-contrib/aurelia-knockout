@@ -21,7 +21,7 @@ define(["require", "exports", "aurelia-dependency-injection", "aurelia-templatin
         }
         return null;
     }
-    var KnockoutCustomAttribute = (function () {
+    var KnockoutCustomAttribute = /** @class */ (function () {
         function KnockoutCustomAttribute(element) {
             this.element = element;
         }
@@ -51,11 +51,11 @@ define(["require", "exports", "aurelia-dependency-injection", "aurelia-templatin
         KnockoutCustomAttribute.prototype.unbind = function () {
             ko.cleanNode(this.element);
         };
+        KnockoutCustomAttribute = __decorate([
+            aurelia_templating_1.customAttribute('knockout'),
+            aurelia_dependency_injection_1.inject(Element)
+        ], KnockoutCustomAttribute);
         return KnockoutCustomAttribute;
     }());
-    KnockoutCustomAttribute = __decorate([
-        aurelia_templating_1.customAttribute('knockout'),
-        aurelia_dependency_injection_1.inject(Element)
-    ], KnockoutCustomAttribute);
     exports.KnockoutCustomAttribute = KnockoutCustomAttribute;
 });

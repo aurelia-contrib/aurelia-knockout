@@ -57,7 +57,7 @@ function processInstruction(instruction) {
 function loadModule(moduleId, loader) {
     return loader.loadModule(moduleId);
 }
-var KnockoutComposition = (function () {
+var KnockoutComposition = /** @class */ (function () {
     function KnockoutComposition(compositionEngine, container, loader) {
         this.compositionEngine = compositionEngine;
         this.container = container;
@@ -165,12 +165,13 @@ var KnockoutComposition = (function () {
                     return result;
                 }
             }
+            _this.container.registerTransient(result);
             return _this.container.get(result);
         });
     };
+    KnockoutComposition = __decorate([
+        aurelia_dependency_injection_1.inject(aurelia_templating_1.CompositionEngine, aurelia_dependency_injection_1.Container, aurelia_loader_1.Loader)
+    ], KnockoutComposition);
     return KnockoutComposition;
 }());
-KnockoutComposition = __decorate([
-    aurelia_dependency_injection_1.inject(aurelia_templating_1.CompositionEngine, aurelia_dependency_injection_1.Container, aurelia_loader_1.Loader)
-], KnockoutComposition);
 exports.KnockoutComposition = KnockoutComposition;
