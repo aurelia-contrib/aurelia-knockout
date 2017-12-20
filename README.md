@@ -26,6 +26,7 @@ Install this plugin with npm:
   ```shell
   npm install aurelia-knockout --save
   ```
+  TypeScript definitions are included in the npm package.
 
 ## Integration with Aurelia CLI
 
