@@ -191,11 +191,16 @@ Subscriptions for Knockout Observables which are created from this plugin intern
 if the child view is unbound.
 
 
+## Guides
+
+- [Migration guide from Durandal to Aurelia](https://github.com/code-chris/aurelia-knockout/blob/master/doc/upgrading-to-aurelia-from-durandal.md)
+
+
 ## Building The Code
 
 To build the code, follow these steps.
 
-1. Ensure that [NodeJS](http://nodejs.org/) is installed. This provides the platform on which the build tooling runs.
+1. Ensure that [NodeJS](https://nodejs.org/) is installed. This provides the platform on which the build tooling runs.
 2. From the project folder, execute the following command:
 
   ```shell
