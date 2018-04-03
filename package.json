@@ -13,7 +13,7 @@
     "knockout"
   ],
   "scripts": {
-    "test": "tsc --project tsconfig.json --target es6 --module commonjs --outDir dist/test && gulp test",
+    "test": "tsc --project tsconfig.json --target es6 --module commonjs --outDir dist/test && ava dist/test/**/*.spec.js",
     "ci": "npm run build && npm run test",
     "build": "aurelia-tools ts-build-all --continue-when-failed --clean-before"
   },
@@ -26,9 +26,10 @@
     "url": "http://github.com/code-chris/aurelia-knockout"
   },
   "devDependencies": {
+    "@types/sinon": "~4.3.0",
     "aurelia-tools": "github:aurelia/tools#cli",
-    "gulp": "^3.9.1",
-    "gulp-jasmine": "^3.0.0",
+    "ava": "~1.0.0-beta.3",
+    "sinon": "~4.5.0",
     "typedoc": "^0.9.0",
     "typescript": "~2.6.1"
   },

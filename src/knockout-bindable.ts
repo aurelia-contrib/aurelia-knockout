@@ -1,4 +1,4 @@
-import {ObserverLocator} from 'aurelia-binding';
+import {InternalPropertyObserver, ObserverLocator} from 'aurelia-binding';
 import {BehaviorPropertyObserver} from 'aurelia-templating';
 import {inject} from 'aurelia-dependency-injection';
 import * as ko from 'knockout';
@@ -7,7 +7,7 @@ import * as ko from 'knockout';
 export class KnockoutBindable {
 
   observerLocator: ObserverLocator;
-  subscriptions: any[] = [];
+  subscriptions: any[] = []; // Knockout subscriptions
 
   constructor(observerLocator: ObserverLocator) {
     this.observerLocator = observerLocator;
@@ -28,16 +28,14 @@ export class KnockoutBindable {
     target = target || {};
     applyOnlyObservables = applyOnlyObservables === undefined ? true : applyOnlyObservables;
 
-    let keys: string[] = Object.keys(data);
-
-    keys.forEach((key: string) => {
-      let outerValue: any = data[key];
-      let isObservable: boolean = ko.isObservable(outerValue);
+    Object.keys(data).forEach((key: string) => {
+      const outerValue: any = data[key];
+      const isObservable: boolean = ko.isObservable(outerValue);
 
       if (isObservable || !applyOnlyObservables) {
-        let observer: any = this.getObserver(target, key);
+        const observer: InternalPropertyObserver = this.getObserver(target, key);
 
-        if (observer && observer instanceof BehaviorPropertyObserver) {
+        if (observer && observer instanceof BehaviorPropertyObserver) { // check if inner property is @bindable
           observer.setValue(isObservable ? ko.unwrap(outerValue) : outerValue);
         }
 
@@ -50,13 +48,10 @@ export class KnockoutBindable {
     });
 
 
-    let originalUnbind: Function = target.unbind;
+    const originalUnbind: Function = target.unbind;
 
     target.unbind = (): void => {
-      this.subscriptions.forEach((subscription: any): void => {
-        subscription.dispose();
-      });
-
+      this.subscriptions.forEach((subscription: any): void => subscription.dispose());
       this.subscriptions = [];
 
       if (originalUnbind) {
@@ -66,7 +61,7 @@ export class KnockoutBindable {
   }
 
   /** internal: do not use */
-  getObserver(target: any, key: string): any {
+  getObserver(target: any, key: string): InternalPropertyObserver {
     return this.observerLocator.getObserver(target, key);
   }
 }

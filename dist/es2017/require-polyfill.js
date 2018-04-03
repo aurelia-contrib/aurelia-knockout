@@ -14,10 +14,10 @@ let RequirePolyfill = class RequirePolyfill {
      * Registers the `require` function if not set.
      */
     register() {
-        var w = window;
+        const w = window;
         if (!w.require) {
             w.require = (modulesToLoad, callback) => {
-                var promises = [];
+                const promises = [];
                 modulesToLoad.forEach((module) => {
                     if (module.startsWith("text!")) {
                         promises.push(this.loader.loadText(module.substr(5)));
@@ -27,9 +27,9 @@ let RequirePolyfill = class RequirePolyfill {
                     }
                 });
                 Promise.all(promises).then((r) => {
-                    var results = [];
+                    const results = [];
                     r.forEach((element) => {
-                        var props = Object.keys(element);
+                        const props = Object.keys(element);
                         if (props.length === 1 && typeof element[props[0]] === "function") {
                             results.push(element[props[0]]);
                         }

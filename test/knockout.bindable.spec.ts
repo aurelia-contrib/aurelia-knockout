@@ -1,121 +1,114 @@
-/// <reference path="types.d.ts" />
-
 import {KnockoutBindable} from '../src/knockout-bindable';
 import {BehaviorPropertyObserver} from 'aurelia-templating';
 import {SetterObserver} from 'aurelia-binding';
 import * as ko from "knockout";
+import test from 'ava';
+import * as sinon from 'sinon';
 
-describe('knockout bindable', () => {
-  let knockoutBindable: any;
-  let observer: any;
+let knockoutBindable: any;
+let observer: any; // BehaviorPropertyObserver or SetterObserver
 
-  function mockBindable(target?: any) {
-    observer = new BehaviorPropertyObserver(<any>null, <any>null, <any>null, <any>null, <any>null);
+const mockBindable = (target?: any) => {
+  observer = new BehaviorPropertyObserver(<any>null, <any>null, <any>null, <any>null, <any>null);
 
-    if (target) {
-      observer.setValue = function (value: any) {
-        target.price = value;
-      };
-    } else {
-      observer.setValue = jasmine.createSpy("setValue spy");
-    }
-
-    knockoutBindable = new KnockoutBindable(<any>null);
-    knockoutBindable.getObserver = jasmine.createSpy("getObserver spy").and.returnValue(observer);
+  if (target) {
+    observer.setValue = (value: any) => target.price = value;
+  } else {
+    observer.setValue = sinon.spy();
   }
 
-  function mockNotBindable() {
-    observer = new SetterObserver();
-    observer.setValue = jasmine.createSpy("setValue spy");
+  knockoutBindable = new KnockoutBindable(<any>null);
+  knockoutBindable.getObserver = sinon.stub().returns(observer);
+}
 
-    knockoutBindable = new KnockoutBindable(<any>null);
-    knockoutBindable.getObserver = jasmine.createSpy("getObserver spy").and.returnValue(observer);
-  }
+const mockNotBindable = () => {
+  observer = new SetterObserver();
+  observer.setValue = sinon.spy();
 
+  knockoutBindable = new KnockoutBindable(<any>null);
+  knockoutBindable.getObserver = sinon.stub().returns(observer);
+}
 
-  it('empty activationData - nothing happens', () => {
-    mockBindable();
+test('empty activationData - nothing happens', t => {
+  mockBindable();
 
-    knockoutBindable.applyBindableValues({}, null);
+  knockoutBindable.applyBindableValues({}, null);
 
-    expect(knockoutBindable.getObserver).not.toHaveBeenCalled();
-    expect(observer.setValue).not.toHaveBeenCalled();
-  });
+  t.is(knockoutBindable.getObserver.called, false);
+  t.is(observer.setValue.called, false);
+});
 
-  it('activationData with no Observable - nothing happens', () => {
-    mockBindable();
-    let target = { price: null };
+test('activationData with no Observable - nothing happens', t => {
+  mockBindable();
+  const target = { price: null };
 
-    knockoutBindable.applyBindableValues({ price: 5 }, target);
+  knockoutBindable.applyBindableValues({ price: 5 }, target);
 
-    expect(knockoutBindable.getObserver).not.toHaveBeenCalled();
-    expect(observer.setValue).not.toHaveBeenCalled();
-  });
+  t.is(knockoutBindable.getObserver.called, false);
+  t.is(observer.setValue.called, false);
+});
 
-  it('activationData with no Observable; apply non observables - value is updated', () => {
-    let target = { price: null };
-    mockBindable(target);
+test('activationData with no Observable; apply non observables - value is updated', t => {
+  const target = { price: null };
+  mockBindable(target);
 
-    knockoutBindable.applyBindableValues({ price: 5 }, target, false);
+  knockoutBindable.applyBindableValues({ price: 5 }, target, false);
 
-    expect(knockoutBindable.getObserver).toHaveBeenCalled();
-    expect(target.price).toBe(5);
-  });
+  t.is(knockoutBindable.getObserver.called, true);
+  t.is(target.price, 5);
+});
 
-  it('activationData with Observable - value is updated', () => {
-    let target = { price: null };
-    mockBindable(target);
+test('activationData with Observable - value is updated', t => {
+  const target = { price: null };
+  mockBindable(target);
 
-    knockoutBindable.applyBindableValues({ price: ko.observable(5) }, target);
+  knockoutBindable.applyBindableValues({ price: ko.observable(5) }, target);
 
-    expect(knockoutBindable.getObserver).toHaveBeenCalled();
-    expect(target.price).toBe(5);
-  });
+  t.is(knockoutBindable.getObserver.called, true);
+  t.is(target.price, 5);
+});
 
-  it('activationData with Observable; no bindable property - nothing happens', () => {
-    mockNotBindable();
-    let target = { price: null };
+test('activationData with Observable; no bindable property - nothing happens', t => {
+  mockNotBindable();
+  const target = { price: null };
 
-    knockoutBindable.applyBindableValues({ price: ko.observable(5) }, target);
+  knockoutBindable.applyBindableValues({ price: ko.observable(5) }, target);
 
-    expect(knockoutBindable.getObserver).toHaveBeenCalled();
-    expect(observer.setValue).not.toHaveBeenCalledWith(5);
-  });
+  t.is(knockoutBindable.getObserver.called, true);
+  t.is(observer.setValue.called, false);
+});
 
-  it('activationData with Observable - subscription updates value', () => {
-    let activationData = { price: ko.observable(5) };
-    let target = { price: null };
-    mockBindable(target);
+test('activationData with Observable - subscription updates value', t => {
+  const activationData = { price: ko.observable(5) };
+  const target = { price: null };
+  mockBindable(target);
 
-    knockoutBindable.applyBindableValues(activationData, target);
+  knockoutBindable.applyBindableValues(activationData, target);
 
-    expect(knockoutBindable.getObserver).toHaveBeenCalled();
-    expect(knockoutBindable.subscriptions.length).toBe(1);
-    expect(target.price).toBe(5);
+  t.is(knockoutBindable.getObserver.called, true);
+  t.is(knockoutBindable.subscriptions.length, 1);
+  t.is(target.price, 5);
 
-    activationData.price(6);
-    expect(target.price).toBe(6);
-  });
+  activationData.price(6);
+  t.is(target.price, 6);
+});
 
-  it('activationData with Observable - unbind disposes subscriptions', () => {
-    let activationData = { price: ko.observable(5) };
-    let unbindCounter = 0;
-    let target = {
-      price: null,
-      unbind: function () {
-        unbindCounter = unbindCounter + 1;
-      }
-    };
-    mockBindable(target);
+test('activationData with Observable - unbind disposes subscriptions', t => {
+  const activationData = { price: ko.observable(5) };
+  let unbindCounter = 0;
+  const target = {
+    price: null,
+    unbind: () => unbindCounter++
+  };
+  mockBindable(target);
 
-    knockoutBindable.applyBindableValues(activationData, target);
+  knockoutBindable.applyBindableValues(activationData, target);
 
-    expect(knockoutBindable.getObserver).toHaveBeenCalled();
-    expect(knockoutBindable.subscriptions.length).toBe(1);
+  t.is(knockoutBindable.getObserver.called, true);
+  t.is(knockoutBindable.subscriptions.length, 1);
 
-    target.unbind();
+  target.unbind();
 
-    expect(knockoutBindable.subscriptions.length).toBe(0);
-    expect(unbindCounter).toBe(1);
-  });
+  t.is(knockoutBindable.subscriptions.length, 0);
+  t.is(unbindCounter, 1);
 });

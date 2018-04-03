@@ -12,9 +12,9 @@ function endsWith(s, suffix) {
     return s.indexOf(suffix, s.length - suffix.length) !== -1;
 }
 function getMatchingProperty(result, propName) {
-    let properties = Object.keys(result);
+    const properties = Object.keys(result);
     for (let index = 0; index < properties.length; index++) {
-        let prop = properties[index].toLowerCase();
+        const prop = properties[index].toLowerCase();
         if (prop.indexOf(propName) !== -1) {
             return properties[index];
         }
@@ -22,8 +22,8 @@ function getMatchingProperty(result, propName) {
     return null;
 }
 function callEvent(element, eventName, args) {
-    let viewModel = ko.dataFor(element.children[0]);
-    let func = viewModel[eventName];
+    const viewModel = ko.dataFor(element.children[0]);
+    const func = viewModel[eventName];
     if (func && typeof func === 'function') {
         func.apply(viewModel, args);
     }
@@ -69,7 +69,7 @@ let KnockoutComposition = class KnockoutComposition {
         }
         ko.bindingHandlers.compose = {
             update: (element, valueAccessor, allBindings, viewModel) => {
-                let value = valueAccessor();
+                const value = valueAccessor();
                 if (element.childElementCount > 0) {
                     // Remove previous composed view
                     callEvent(element, 'detached', [element, element.parentElement]);
@@ -143,12 +143,12 @@ let KnockoutComposition = class KnockoutComposition {
     }
     /** internal: do not use */
     getViewModelInstance(moduleId) {
-        let index = moduleId.lastIndexOf("/");
-        let fileName = moduleId.substr(index === -1 ? 0 : index + 1).toLowerCase();
+        const index = moduleId.lastIndexOf("/");
+        const fileName = moduleId.substr(index === -1 ? 0 : index + 1).toLowerCase();
         return loadModule(moduleId, this.loader).then((result) => {
             if (typeof result !== 'function') {
                 // Try to find a property which name matches the filename of the module
-                let constructorPropName = getMatchingProperty(result, fileName);
+                const constructorPropName = getMatchingProperty(result, fileName);
                 if (constructorPropName) {
                     // Use function of property.
                     // This occurs if the constructor function is exported by the module.

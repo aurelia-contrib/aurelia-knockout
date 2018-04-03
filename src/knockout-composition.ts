@@ -9,9 +9,9 @@ function endsWith(s: string, suffix: string): boolean {
 }
 
 function getMatchingProperty(result: any, propName: string): string|null {
-  let properties: string[] = Object.keys(result);
+  const properties: string[] = Object.keys(result);
   for (let index: number = 0; index < properties.length; index++) {
-    let prop: string = properties[index].toLowerCase();
+    const prop: string = properties[index].toLowerCase();
     if (prop.indexOf(propName) !== -1) {
       return properties[index];
     }
@@ -21,9 +21,9 @@ function getMatchingProperty(result: any, propName: string): string|null {
 }
 
 function callEvent(element: Element, eventName: string, args: any): void {
-  let viewModel: any = ko.dataFor(element.children[0]);
+  const viewModel: any = ko.dataFor(element.children[0]);
 
-  let func: Function = viewModel[eventName];
+  const func: Function = viewModel[eventName];
 
   if (func && typeof func === 'function') {
     func.apply(viewModel, args);
@@ -86,7 +86,7 @@ export class KnockoutComposition {
 
     (<any>ko.bindingHandlers).compose = {
       update: (element: Element, valueAccessor: any, allBindings: any, viewModel: any): void => {
-        let value: any = valueAccessor();
+        const value: any = valueAccessor();
 
         if (element.childElementCount > 0) {
           // Remove previous composed view
@@ -167,13 +167,13 @@ export class KnockoutComposition {
 
   /** internal: do not use */
   getViewModelInstance(moduleId: string): Promise<any> {
-    let index: number = moduleId.lastIndexOf("/");
-    let fileName: string = moduleId.substr(index === -1 ? 0 : index + 1).toLowerCase();
+    const index: number = moduleId.lastIndexOf("/");
+    const fileName: string = moduleId.substr(index === -1 ? 0 : index + 1).toLowerCase();
 
     return loadModule(moduleId, this.loader).then((result: any): any => {
       if (typeof result !== 'function') {
         // Try to find a property which name matches the filename of the module
-        let constructorPropName: string|null = getMatchingProperty(result, fileName);
+        const constructorPropName: string|null = getMatchingProperty(result, fileName);
 
         if (constructorPropName) {
           // Use function of property.

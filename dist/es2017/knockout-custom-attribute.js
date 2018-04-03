@@ -8,13 +8,13 @@ import { inject } from 'aurelia-dependency-injection';
 import { customAttribute } from 'aurelia-templating';
 import * as ko from 'knockout';
 function getFirstBoundChild(rootNode) {
-    var data = ko.dataFor(rootNode);
+    const data = ko.dataFor(rootNode);
     if (data) {
         return rootNode;
     }
-    for (var i = 0; i < rootNode.children.length; i++) {
-        var child = rootNode.children[i];
-        var childData = getFirstBoundChild(child);
+    for (let i = 0; i < rootNode.children.length; i++) {
+        const child = rootNode.children[i];
+        const childData = getFirstBoundChild(child);
         if (childData) {
             return childData;
         }

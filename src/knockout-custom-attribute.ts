@@ -4,14 +4,14 @@ import * as ko from 'knockout';
 
 
 function getFirstBoundChild(rootNode: Element): Element|null {
-  var data: any = ko.dataFor(rootNode);
+  const data: any = ko.dataFor(rootNode);
   if (data) {
     return rootNode;
   }
 
-  for (var i: number = 0; i < rootNode.children.length; i++) {
-    var child: Element = rootNode.children[i];
-    var childData: Element|null = getFirstBoundChild(child);
+  for (let i: number = 0; i < rootNode.children.length; i++) {
+    const child: Element = rootNode.children[i];
+    const childData: Element|null = getFirstBoundChild(child);
     if (childData) {
       return childData;
     }

@@ -9,7 +9,7 @@ define(["require", "exports", "aurelia-binding", "aurelia-templating", "aurelia-
     Object.defineProperty(exports, "__esModule", { value: true });
     var KnockoutBindable = /** @class */ (function () {
         function KnockoutBindable(observerLocator) {
-            this.subscriptions = [];
+            this.subscriptions = []; // Knockout subscriptions
             this.observerLocator = observerLocator;
         }
         /**
@@ -27,8 +27,7 @@ define(["require", "exports", "aurelia-binding", "aurelia-templating", "aurelia-
             data = data || {};
             target = target || {};
             applyOnlyObservables = applyOnlyObservables === undefined ? true : applyOnlyObservables;
-            var keys = Object.keys(data);
-            keys.forEach(function (key) {
+            Object.keys(data).forEach(function (key) {
                 var outerValue = data[key];
                 var isObservable = ko.isObservable(outerValue);
                 if (isObservable || !applyOnlyObservables) {
@@ -45,9 +44,7 @@ define(["require", "exports", "aurelia-binding", "aurelia-templating", "aurelia-
             });
             var originalUnbind = target.unbind;
             target.unbind = function () {
-                _this.subscriptions.forEach(function (subscription) {
-                    subscription.dispose();
-                });
+                _this.subscriptions.forEach(function (subscription) { return subscription.dispose(); });
                 _this.subscriptions = [];
                 if (originalUnbind) {
                     originalUnbind.call(target);

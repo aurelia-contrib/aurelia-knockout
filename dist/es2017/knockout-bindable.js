@@ -10,7 +10,7 @@ import { inject } from 'aurelia-dependency-injection';
 import * as ko from 'knockout';
 let KnockoutBindable = class KnockoutBindable {
     constructor(observerLocator) {
-        this.subscriptions = [];
+        this.subscriptions = []; // Knockout subscriptions
         this.observerLocator = observerLocator;
     }
     /**
@@ -27,12 +27,11 @@ let KnockoutBindable = class KnockoutBindable {
         data = data || {};
         target = target || {};
         applyOnlyObservables = applyOnlyObservables === undefined ? true : applyOnlyObservables;
-        let keys = Object.keys(data);
-        keys.forEach((key) => {
-            let outerValue = data[key];
-            let isObservable = ko.isObservable(outerValue);
+        Object.keys(data).forEach((key) => {
+            const outerValue = data[key];
+            const isObservable = ko.isObservable(outerValue);
             if (isObservable || !applyOnlyObservables) {
-                let observer = this.getObserver(target, key);
+                const observer = this.getObserver(target, key);
                 if (observer && observer instanceof BehaviorPropertyObserver) {
                     observer.setValue(isObservable ? ko.unwrap(outerValue) : outerValue);
                 }
@@ -43,11 +42,9 @@ let KnockoutBindable = class KnockoutBindable {
                 }
             }
         });
-        let originalUnbind = target.unbind;
+        const originalUnbind = target.unbind;
         target.unbind = () => {
-            this.subscriptions.forEach((subscription) => {
-                subscription.dispose();
-            });
+            this.subscriptions.forEach((subscription) => subscription.dispose());
             this.subscriptions = [];
             if (originalUnbind) {
                 originalUnbind.call(target);

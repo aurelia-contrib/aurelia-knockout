@@ -26,7 +26,7 @@ System.register(["aurelia-binding", "aurelia-templating", "aurelia-dependency-in
         execute: function () {
             KnockoutBindable = /** @class */ (function () {
                 function KnockoutBindable(observerLocator) {
-                    this.subscriptions = [];
+                    this.subscriptions = []; // Knockout subscriptions
                     this.observerLocator = observerLocator;
                 }
                 /**
@@ -44,8 +44,7 @@ System.register(["aurelia-binding", "aurelia-templating", "aurelia-dependency-in
                     data = data || {};
                     target = target || {};
                     applyOnlyObservables = applyOnlyObservables === undefined ? true : applyOnlyObservables;
-                    var keys = Object.keys(data);
-                    keys.forEach(function (key) {
+                    Object.keys(data).forEach(function (key) {
                         var outerValue = data[key];
                         var isObservable = ko.isObservable(outerValue);
                         if (isObservable || !applyOnlyObservables) {
@@ -62,9 +61,7 @@ System.register(["aurelia-binding", "aurelia-templating", "aurelia-dependency-in
                     });
                     var originalUnbind = target.unbind;
                     target.unbind = function () {
-                        _this.subscriptions.forEach(function (subscription) {
-                            subscription.dispose();
-                        });
+                        _this.subscriptions.forEach(function (subscription) { return subscription.dispose(); });
                         _this.subscriptions = [];
                         if (originalUnbind) {
                             originalUnbind.call(target);

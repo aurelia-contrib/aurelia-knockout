@@ -1,4 +1,4 @@
-import { ObserverLocator } from 'aurelia-binding';
+import { InternalPropertyObserver, ObserverLocator } from 'aurelia-binding';
 export declare class KnockoutBindable {
     observerLocator: ObserverLocator;
     subscriptions: any[];
@@ -15,5 +15,5 @@ export declare class KnockoutBindable {
      */
     applyBindableValues(data: any, target: any, applyOnlyObservables: boolean): void;
     /** internal: do not use */
-    getObserver(target: any, key: string): any;
+    getObserver(target: any, key: string): InternalPropertyObserver;
 }

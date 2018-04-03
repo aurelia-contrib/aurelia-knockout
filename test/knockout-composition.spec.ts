@@ -1,106 +1,81 @@
-/// <reference path="types.d.ts" />
-
 import {KnockoutComposition} from '../src/knockout-composition';
 import * as ko from "knockout";
+import test from 'ava';
 
-describe('knockout composition', function() {
-  let knockoutComposition: any;
-  let viewModelInstance: any;
+let knockoutComposition: any;
+let viewModel: any;
+let viewModelPromise: Promise<any>;
 
-  beforeEach(() => {
-    viewModelInstance = Promise.resolve({ prop: "myInstance", test: () => {} });
+test.beforeEach(t => {
+  viewModel = { prop: "myInstance", test: () => { } };
+  viewModelPromise = Promise.resolve(viewModel);
 
-    knockoutComposition = new KnockoutComposition(<any>null, <any>null, <any>null);
-    knockoutComposition.getViewModelInstance = jasmine.createSpy("getViewModelInstance spy").and.returnValue(viewModelInstance);
-  });
-
-  it('registers knockout custom binding', () => {
-    knockoutComposition.register();
-
-    expect(ko.bindingHandlers["compose"]).toBeDefined();
-  });
-
-  it('build settings - null values', () => {
-    let promise = knockoutComposition.buildCompositionSettings(null, null);
-
-    promise.then((settings: any) => {
-      expect(settings).toBe({ view: null, viewModel: null, model: null });
-    });
-  });
-
-  it('build settings - html view', () => {
-    let promise = knockoutComposition.buildCompositionSettings("test.html", null);
-
-    promise.then((settings: any) => {
-      expect(settings).toBe({ view: "test.html", viewModel: "test", model: null });
-    });
-  });
-
-  it('build settings - moduleId', () => {
-    let promise = knockoutComposition.buildCompositionSettings("test", null);
-
-    promise.then((settings: any) => {
-      expect(settings).toBe({ view: null, viewModel: viewModelInstance, model: null });
-    });
-  });
-
-  it('build settings - view object', () => {
-    let promise = knockoutComposition.buildCompositionSettings({ view: "test.html" }, { prop: "context" });
-
-    promise.then((settings: any) => {
-      expect(settings).toBe({ view: "test.html", viewModel: { prop: "context" }, model: null });
-    });
-  });
-
-  it('build settings - model object (string)', () => {
-    let promise = knockoutComposition.buildCompositionSettings({ model: "test" }, null);
-
-    promise.then((settings: any) => {
-      expect(settings).toBe({ view: null, viewModel: viewModelInstance, model: null });
-    });
-  });
-
-  it('build settings - model object', () => {
-    let promise = knockoutComposition.buildCompositionSettings({ model: { test: "prop" } }, null);
-
-    promise.then((settings: any) => {
-      expect(settings).toBe({ view: null, viewModel: { test: "prop" }, model: null });
-    });
-  });
-
-  it('build settings - model and view object', () => {
-    let promise = knockoutComposition.buildCompositionSettings({ model: { test: "prop" }, view: "test.html" }, null);
-
-    promise.then((settings: any) => {
-      expect(settings).toBe({ view: "test.html", viewModel: { test: "prop" }, model: null });
-    });
-  });
-
-  it('build settings - instance object', () => {
-    let promise = knockoutComposition.buildCompositionSettings({ test: "prop" }, null);
-
-    promise.then((settings: any) => {
-      expect(settings).toBe({ view: null, viewModel: { test: "prop" }, model: null });
-    });
-  });
-
-  it('build settings - activationData', () => {
-    let promise = knockoutComposition.buildCompositionSettings({ view: "test.html", activationData: { id: 5, name: "john" } }, null);
-
-    promise.then((settings: any) => {
-      expect(settings).toBe({ view: "test.html", viewModel: null, model: { id: 5, name: "john" } });
-    });
-  });
-
-  it('build settings - constructor', () => {
-    let func = function () {
-      return { id: 1 }
-    };
-
-    let promise = knockoutComposition.buildCompositionSettings(func, null);
-
-    promise.then((settings: any) => {
-      expect(settings).toBe({ view: null, viewModel: { id: 1 }, model: null });
-    });
-  });
+  knockoutComposition = new KnockoutComposition(<any>null, <any>null, <any>null);
+  knockoutComposition.getViewModelInstance = () => viewModelPromise;
 });
+
+test('registers knockout custom binding', t => {
+  knockoutComposition.register();
+  t.not(ko.bindingHandlers["compose"], undefined);
+});
+
+test('build settings - null values', async t => {
+  const settings = await knockoutComposition.buildCompositionSettings(null, null);
+
+  t.deepEqual(settings, { view: null, viewModel: null, model: null });
+});
+
+test('build settings - html view', async t => {
+  const settings = await knockoutComposition.buildCompositionSettings("test.html", null);
+
+  t.deepEqual(settings, { view: "test.html", viewModel: viewModel, model: null });
+});
+
+test('build settings - moduleId', async t => {
+  const settings = await knockoutComposition.buildCompositionSettings("test", null);
+
+  t.deepEqual(settings, { view: null, viewModel: viewModel, model: null });
+});
+
+test('build settings - view object', async t => {
+  const settings = await knockoutComposition.buildCompositionSettings({ view: "test.html" }, { prop: "context" });
+
+  t.deepEqual(settings, { view: "test.html", viewModel: { prop: "context" }, model: null });
+});
+
+test('build settings - model object (string)', async t => {
+  const settings = await knockoutComposition.buildCompositionSettings({ model: "test" }, null);
+
+  t.deepEqual(settings, { view: null, viewModel: viewModel, model: null });
+});
+
+test('build settings - model object', async t => {
+  const settings = await knockoutComposition.buildCompositionSettings({ model: { test: "prop" } }, null);
+
+  t.deepEqual(settings, { view: null, viewModel: { test: "prop" }, model: null });
+});
+
+test('build settings - model and view object', async t => {
+  const settings = await knockoutComposition.buildCompositionSettings({ model: { test: "prop" }, view: "test.html" }, null);
+
+  t.deepEqual(settings, { view: "test.html", viewModel: { test: "prop" }, model: null });
+});
+
+test('build settings - instance object', async t => {
+  const settings = await knockoutComposition.buildCompositionSettings({ test: "prop" }, null);
+
+  t.deepEqual(settings, { view: null, viewModel: { test: "prop" }, model: null });
+});
+
+test('build settings - activationData', async t => {
+  const settings = await knockoutComposition.buildCompositionSettings({ view: "test.html", activationData: { id: 5, name: "john" } }, null);
+
+  t.deepEqual(settings, { view: "test.html", viewModel: null, model: { id: 5, name: "john" } });
+});
+
+test('build settings - constructor', async t => {
+  const settings = await knockoutComposition.buildCompositionSettings(() => { return { id: 1 }; }, null);
+
+  t.deepEqual(settings, { view: null, viewModel: { id: 1 }, model: null });
+});
+
