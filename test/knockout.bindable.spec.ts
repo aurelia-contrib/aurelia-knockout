@@ -1,6 +1,6 @@
 import {KnockoutBindable} from '../src/knockout-bindable';
 import {BehaviorPropertyObserver} from 'aurelia-templating';
-import {SetterObserver} from 'aurelia-binding';
+import * as aureliaBinding from 'aurelia-binding';
 import * as ko from "knockout";
 import test from 'ava';
 import * as sinon from 'sinon';
@@ -22,7 +22,7 @@ const mockBindable = (target?: any) => {
 }
 
 const mockNotBindable = () => {
-  observer = new SetterObserver();
+  observer = new (<any>aureliaBinding).SetterObserver();
   observer.setValue = sinon.spy();
 
   knockoutBindable = new KnockoutBindable(<any>null);

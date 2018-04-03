@@ -2,4 +2,3 @@
 .DS_STORE
 dist/test
 node_modules
-typings

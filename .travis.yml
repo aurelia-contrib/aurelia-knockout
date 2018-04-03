@@ -7,24 +7,6 @@ node_js:
 branches:
   only:
     - master
-    - /^greenkeeper/.*$/
-
-before_install:
-  - npm i -g greenkeeper-lockfile
-
-before_script:
-  - greenkeeper-lockfile-update
 
 script:
-  - npm i -g global typings
-  - typings install
   - npm run ci
-
-after_script:
-  - greenkeeper-lockfile-upload
-
-notifications:
-  slack:
-    on_success: change
-    on_failure: always
-    secure: "JxdAy5TaENtHudmE83XTNNgtrjkuAreORHhkCXWnra/QbDI9f/355s3NJZuDQVUIFKHNb38B/ZpcUk6IpmhMvoqHG/KqpEKDeB39gM/+xvXcfCWwIJuB6KPQ9q0jketJmSddwJ0Z2GGZdBJ1va5kiTdGvEUQaCx/zzUhsK6+kaLTnnBNou+x/HGcFJy/sNgc/Y7T9IwkFpdijNU62TYm4G+YvCoFJ88/tDKPpRd7umbVMhs+SSEw9gco15VXdXwVrpprmGjZU+Q2cmey0Ph4qkgGcYKYNHBm6sY06cN0ZyKsBHWqnRss7yFof+VNwZUnQNO53Z9E3KNMaepCnzKQ/ebdCxdH4CYNxxOu/3WEGVE3WIoxnq540ZfeDru9heBGKWuX3wUmKYw1+cAe1t+shAv1w2ogh+4qKJNLeaQcbcOlW6sFXETnGH2INzdkeUBvC5p5FkXsdLPEt/FL3yzCUs0IqZK99tN9woXt4LYL1NzPuiGZVtckUeMIAefW+WYehgf8rJd2nua6FqdDIlFVSusW8cDnO94OrhFwb2XkpWFF9bBYM1JpxDbku5ykhH7wOlE6wrgOSCfT4yD+ke/ECsx0Tkc9gJ4hYhwhItpH385ssJXdGUamcBcwMsJZH9KeDSXeZ3N4jHx0jUXbkeo0hZfSD83yZp3kLxjas6EOOBU="
