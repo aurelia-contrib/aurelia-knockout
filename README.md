@@ -3,7 +3,7 @@
 > Adds support for Knockout binding syntax to make transition from Durandal and Knockout to Aurelia simpler. You can use Aurelia and Knockout bindings side-by-side to do migration in multiple steps.
 
 [![npm Version](https://img.shields.io/npm/v/aurelia-knockout.svg)](https://www.npmjs.com/package/aurelia-knockout)
-[![Build Status](https://travis-ci.org/code-chris/aurelia-knockout.svg?branch=master)](https://travis-ci.org/code-chris/aurelia-knockout)
+[![Build Status](https://travis-ci.org/aurelia-contrib/aurelia-knockout.svg?branch=master)](https://travis-ci.org/aurelia-contrib/aurelia-knockout)
 
 ## Dependencies
 
@@ -195,7 +195,7 @@ if the child view is unbound.
 
 ## Guides
 
-- [Migration guide from Durandal to Aurelia](https://github.com/code-chris/aurelia-knockout/blob/master/doc/upgrading-to-aurelia-from-durandal.md)
+- [Migration guide from Durandal to Aurelia](https://github.com/aurelia-contrib/aurelia-knockout/blob/master/doc/upgrading-to-aurelia-from-durandal.md)
 
 
 ## Building The Code
