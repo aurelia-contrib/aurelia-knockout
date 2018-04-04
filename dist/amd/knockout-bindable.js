@@ -32,7 +32,7 @@ define(["require", "exports", "aurelia-binding", "aurelia-templating", "aurelia-
                 var isObservable = ko.isObservable(outerValue);
                 if (isObservable || !applyOnlyObservables) {
                     var observer_1 = _this.getObserver(target, key);
-                    if (observer_1 && observer_1 instanceof aurelia_templating_1.BehaviorPropertyObserver) {
+                    if (observer_1 && observer_1 instanceof aurelia_templating_1.BehaviorPropertyObserver) { // check if inner property is @bindable
                         observer_1.setValue(isObservable ? ko.unwrap(outerValue) : outerValue);
                     }
                     if (isObservable) {

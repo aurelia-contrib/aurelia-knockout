@@ -32,7 +32,7 @@ let KnockoutBindable = class KnockoutBindable {
             const isObservable = ko.isObservable(outerValue);
             if (isObservable || !applyOnlyObservables) {
                 const observer = this.getObserver(target, key);
-                if (observer && observer instanceof BehaviorPropertyObserver) {
+                if (observer && observer instanceof BehaviorPropertyObserver) { // check if inner property is @bindable
                     observer.setValue(isObservable ? ko.unwrap(outerValue) : outerValue);
                 }
                 if (isObservable) {
