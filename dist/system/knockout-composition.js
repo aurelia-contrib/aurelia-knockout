@@ -6,6 +6,7 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
         else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
+    var ko, aurelia_dependency_injection_1, aurelia_loader_1, aurelia_templating_1, KnockoutComposition;
     var __moduleName = context_1 && context_1.id;
     function endsWith(s, suffix) {
         return s.indexOf(suffix, s.length - suffix.length) !== -1;
@@ -54,7 +55,6 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
     function loadModule(moduleId, loader) {
         return loader.loadModule(moduleId);
     }
-    var ko, aurelia_dependency_injection_1, aurelia_loader_1, aurelia_templating_1, KnockoutComposition;
     return {
         setters: [
             function (ko_1) {

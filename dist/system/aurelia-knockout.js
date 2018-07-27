@@ -1,5 +1,6 @@
 System.register(["aurelia-pal", "./knockout-bindable", "./knockout-composition", "./knockout-custom-attribute", "./require-polyfill"], function (exports_1, context_1) {
     "use strict";
+    var aurelia_pal_1, knockout_custom_attribute_1, knockout_composition_1, require_polyfill_1;
     var __moduleName = context_1 && context_1.id;
     function configure(frameworkConfig) {
         // register custom attribute
@@ -12,7 +13,6 @@ System.register(["aurelia-pal", "./knockout-bindable", "./knockout-composition",
         knockout_custom_attribute_1.KnockoutCustomAttribute.register();
     }
     exports_1("configure", configure);
-    var aurelia_pal_1, knockout_custom_attribute_1, knockout_composition_1, require_polyfill_1;
     var exportedNames_1 = {
         "configure": true
     };

@@ -6,6 +6,7 @@ System.register(["aurelia-dependency-injection", "aurelia-templating", "knockout
         else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
+    var aurelia_dependency_injection_1, aurelia_templating_1, ko, KnockoutCustomAttribute;
     var __moduleName = context_1 && context_1.id;
     function getFirstBoundChild(rootNode) {
         var data = ko.dataFor(rootNode);
@@ -21,7 +22,6 @@ System.register(["aurelia-dependency-injection", "aurelia-templating", "knockout
         }
         return null;
     }
-    var aurelia_dependency_injection_1, aurelia_templating_1, ko, KnockoutCustomAttribute;
     return {
         setters: [
             function (aurelia_dependency_injection_1_1) {

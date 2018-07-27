@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 2.3.0
+
+Released on July 27, 2018.
+
+-   Updated dependencies (includes update to aurelia-binding@2.x)
+
+
 ## Version 2.2.0
 
 Released on April 04, 2018.
