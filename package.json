@@ -26,19 +26,19 @@
     "url": "http://github.com/aurelia-contrib/aurelia-knockout"
   },
   "devDependencies": {
-    "@types/knockout": "~3.4.58",
-    "@types/sinon": "~5.0.1",
+    "@types/knockout": "^3.4.67",
+    "@types/sinon": "^7.5.1",
     "aurelia-tools": "github:aurelia/tools#cli",
-    "ava": "~1.0.0-beta.6",
-    "sinon": "~6.1.4",
-    "typescript": "~2.9.2"
+    "ava": "^3.4.0",
+    "sinon": "^9.0.0",
+    "typescript": "^3.8.2"
   },
   "dependencies": {
-    "aurelia-binding": "^2.0.0",
-    "aurelia-dependency-injection": "^1.0.0",
-    "aurelia-loader": "^1.0.0",
-    "aurelia-pal": "^1.2.0",
-    "aurelia-templating": "^1.0.0",
-    "knockout": "^3.4.0"
+    "aurelia-binding": "^2.5.2",
+    "aurelia-dependency-injection": "^1.5.2",
+    "aurelia-loader": "^1.0.2",
+    "aurelia-pal": "^1.8.2",
+    "aurelia-templating": "^1.10.3",
+    "knockout": "^3.5.1"
   }
 }
