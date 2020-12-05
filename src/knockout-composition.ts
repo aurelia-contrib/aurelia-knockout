@@ -20,13 +20,26 @@ function getMatchingProperty(result: any, propName: string): string|null {
   return null;
 }
 
+function getAuTarget(elements: HTMLCollection): Element | null {
+  for (let i = 0; i < elements.length; i++) {
+    if (elements.item(i)?.classList.contains("au-target")) {
+      return elements.item(i);
+    }
+  }
+
+  return null;
+}
+
 function callEvent(element: Element, eventName: string, args: any): void {
-  const viewModel: any = ko.dataFor(element.children[0]);
+  const target: Element | null = getAuTarget(element.children);
 
-  const func: Function = viewModel[eventName];
+  if (target) {
+    const viewModel: any = ko.dataFor(target);
+    const func: Function = viewModel[eventName];
 
-  if (func && typeof func === 'function') {
-    func.apply(viewModel, args);
+    if (func && typeof func === 'function') {
+      func.apply(viewModel, args);
+    }
   }
 }
 
