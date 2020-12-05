@@ -85,7 +85,7 @@ export class KnockoutComposition {
     }
 
     (<any>ko.bindingHandlers).compose = {
-      update: (element: Element, valueAccessor: any, allBindings: any, viewModel: any): void => {
+      update: (element: Element, valueAccessor: any, allBindings: any, viewModel: any, bindingContext: any): void => {
         const value: any = valueAccessor();
 
         if (element.childElementCount > 0) {
@@ -95,6 +95,11 @@ export class KnockoutComposition {
           while (element.firstChild) {
             element.removeChild(element.firstChild);
           }
+        }
+
+        if (viewModel) {
+          viewModel.$parent = viewModel.$parent || bindingContext.$parent;
+          viewModel.$root = viewModel.$root || bindingContext.$root;
         }
 
         doComposition.call(this, element, ko.unwrap(value), viewModel);
