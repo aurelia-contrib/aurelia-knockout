@@ -1,5 +1,20 @@
 # Changelog
 
+## Version 2.4.1
+
+Released on December 5, 2020.
+
+-   Fix: Preserve `$root` and `$parent` context when composing with `with` directive.
+-   Fix: Use first bound element to fetch view-model from.
+
+
+## Version 2.4.0
+
+Released on February 23, 2020.
+
+-   Updated dependencies
+
+
 ## Version 2.3.0
 
 Released on July 27, 2018.

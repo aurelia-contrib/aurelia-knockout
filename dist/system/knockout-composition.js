@@ -21,11 +21,23 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
         }
         return null;
     }
+    function getAuTarget(elements) {
+        var _a;
+        for (var i = 0; i < elements.length; i++) {
+            if ((_a = elements.item(i)) === null || _a === void 0 ? void 0 : _a.classList.contains("au-target")) {
+                return elements.item(i);
+            }
+        }
+        return null;
+    }
     function callEvent(element, eventName, args) {
-        var viewModel = ko.dataFor(element.children[0]);
-        var func = viewModel[eventName];
-        if (func && typeof func === 'function') {
-            func.apply(viewModel, args);
+        var target = getAuTarget(element.children);
+        if (target) {
+            var viewModel = ko.dataFor(target);
+            var func = viewModel[eventName];
+            if (func && typeof func === 'function') {
+                func.apply(viewModel, args);
+            }
         }
     }
     function doComposition(element, unwrappedValue, viewModel) {
@@ -87,7 +99,7 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
                         window.ko = ko;
                     }
                     ko.bindingHandlers.compose = {
-                        update: function (element, valueAccessor, allBindings, viewModel) {
+                        update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
                             var value = valueAccessor();
                             if (element.childElementCount > 0) {
                                 // Remove previous composed view
@@ -95,6 +107,10 @@ System.register(["knockout", "aurelia-dependency-injection", "aurelia-loader", "
                                 while (element.firstChild) {
                                     element.removeChild(element.firstChild);
                                 }
+                            }
+                            if (viewModel) {
+                                viewModel.$parent = viewModel.$parent || bindingContext.$parent;
+                                viewModel.$root = viewModel.$root || bindingContext.$root;
                             }
                             doComposition.call(_this, element, ko.unwrap(value), viewModel);
                         }

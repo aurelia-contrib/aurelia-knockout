@@ -1,6 +1,6 @@
 {
   "name": "aurelia-knockout",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "main": "dist/commonjs/aurelia-knockout.js",
   "author": "Christian Kotzbauer <christian.kotzbauer@gmail.com> (Twitter: https://twitter.com/ckotzbauer1)",
   "license": "MIT",

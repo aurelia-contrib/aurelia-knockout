@@ -21,11 +21,23 @@ function getMatchingProperty(result, propName) {
     }
     return null;
 }
+function getAuTarget(elements) {
+    var _a;
+    for (let i = 0; i < elements.length; i++) {
+        if ((_a = elements.item(i)) === null || _a === void 0 ? void 0 : _a.classList.contains("au-target")) {
+            return elements.item(i);
+        }
+    }
+    return null;
+}
 function callEvent(element, eventName, args) {
-    const viewModel = ko.dataFor(element.children[0]);
-    const func = viewModel[eventName];
-    if (func && typeof func === 'function') {
-        func.apply(viewModel, args);
+    const target = getAuTarget(element.children);
+    if (target) {
+        const viewModel = ko.dataFor(target);
+        const func = viewModel[eventName];
+        if (func && typeof func === 'function') {
+            func.apply(viewModel, args);
+        }
     }
 }
 function doComposition(element, unwrappedValue, viewModel) {
@@ -68,7 +80,7 @@ let KnockoutComposition = class KnockoutComposition {
             window.ko = ko;
         }
         ko.bindingHandlers.compose = {
-            update: (element, valueAccessor, allBindings, viewModel) => {
+            update: (element, valueAccessor, allBindings, viewModel, bindingContext) => {
                 const value = valueAccessor();
                 if (element.childElementCount > 0) {
                     // Remove previous composed view
@@ -76,6 +88,10 @@ let KnockoutComposition = class KnockoutComposition {
                     while (element.firstChild) {
                         element.removeChild(element.firstChild);
                     }
+                }
+                if (viewModel) {
+                    viewModel.$parent = viewModel.$parent || bindingContext.$parent;
+                    viewModel.$root = viewModel.$root || bindingContext.$root;
                 }
                 doComposition.call(this, element, ko.unwrap(value), viewModel);
             }
