@@ -3,6 +3,9 @@ import {Container, inject} from 'aurelia-dependency-injection';
 import {Loader} from 'aurelia-loader';
 import {ViewSlot, CompositionEngine} from 'aurelia-templating';
 
+interface ComposableElement extends Element {
+  compositionId: number;
+}
 
 function endsWith(s: string, suffix: string): boolean {
   return s.indexOf(suffix, s.length - suffix.length) !== -1;
@@ -43,12 +46,29 @@ function callEvent(element: Element, eventName: string, args: any): void {
   }
 }
 
-function doComposition(element: Element, unwrappedValue: any, viewModel: any): void {
-  this.buildCompositionSettings(unwrappedValue, viewModel).then((settings: any): void => {
-    composeElementInstruction.call(this, element, settings).then((): void => {
-      callEvent(element, 'compositionComplete', [element, element.parentElement]);
+function doComposition(element: ComposableElement, unwrappedValue: any, viewModel: any): void {
+  const compositionId = (element.compositionId || 0) + 1;
+  element.compositionId = compositionId;
+  return this.buildCompositionSettings(unwrappedValue, viewModel)
+    .then((settings: any): void => {
+      /**
+       * This should fixes rare race condition which happens for example in tabbed view.
+       * Race condition happens when user rapidly clicks multiple tabs (one after another) and views are not 
+       * loaded yet.
+       * 
+       * As result, Promises are loading the .html file for views on background and waiting.
+       * Then, when they resolve, all tabs are injected into view at once, instead of using just the last one.
+       * 
+       * This fixes that issue and only last view is used (last view has highest compositionId).
+       */
+      if (element.compositionId > compositionId) {
+        console.log('Race condition detected');
+        return;
+      }
+
+      return composeElementInstruction.call(this, element, settings)
+        .then((): void => callEvent(element, 'compositionComplete', [element, element.parentElement]))
     });
-  });
 }
 
 function composeElementInstruction(element: Element, instruction: any): Promise<void> {

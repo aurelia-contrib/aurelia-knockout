@@ -6,6 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.KnockoutComposition = void 0;
 var ko = require("knockout");
 var aurelia_dependency_injection_1 = require("aurelia-dependency-injection");
 var aurelia_loader_1 = require("aurelia-loader");
@@ -44,10 +45,26 @@ function callEvent(element, eventName, args) {
 }
 function doComposition(element, unwrappedValue, viewModel) {
     var _this = this;
-    this.buildCompositionSettings(unwrappedValue, viewModel).then(function (settings) {
-        composeElementInstruction.call(_this, element, settings).then(function () {
-            callEvent(element, 'compositionComplete', [element, element.parentElement]);
-        });
+    var compositionId = (element.compositionId || 0) + 1;
+    element.compositionId = compositionId;
+    return this.buildCompositionSettings(unwrappedValue, viewModel)
+        .then(function (settings) {
+        /**
+         * This should fixes rare race condition which happens for example in tabbed view.
+         * Race condition happens when user rapidly clicks multiple tabs (one after another) and views are not
+         * loaded yet.
+         *
+         * As result, Promises are loading the .html file for views on background and waiting.
+         * Then, when they resolve, all tabs are injected into view at once, instead of using just the last one.
+         *
+         * This fixes that issue and only last view is used (last view has highest compositionId).
+         */
+        if (element.compositionId > compositionId) {
+            console.log('Race condition detected');
+            return;
+        }
+        return composeElementInstruction.call(_this, element, settings)
+            .then(function () { return callEvent(element, 'compositionComplete', [element, element.parentElement]); });
     });
 }
 function composeElementInstruction(element, instruction) {
