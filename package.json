@@ -29,7 +29,7 @@
     "@types/knockout": "^3.4.67",
     "@types/sinon": "^7.5.1",
     "aurelia-tools": "github:aurelia/tools#cli",
-    "ava": "^3.4.0",
+    "ava": "^5.2.0",
     "sinon": "^9.0.0",
     "typescript": "^3.8.2"
   },
